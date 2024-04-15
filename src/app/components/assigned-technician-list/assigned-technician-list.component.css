@@ -1,0 +1,127 @@
+.e-bigger #technician_popup .e-dropdownbase .e-list-item {
+    line-height: 40px;
+    height: 64px;
+}
+
+.e-bigger #technician_popup.e-popup .empImage {
+    margin: 6px 16px;
+}
+
+#technician_popup .head {
+    font-weight: 600;
+    height: 48px;
+    padding: 15px 0 0 20px;
+    color: rgba(0, 0, 0, .54);
+    font-size: 16px;
+    font-family: "Roboto";
+    background-color: #f5f5f5;
+}    
+
+.highcontrast #technician_popup .head {
+    color: #fff;
+    background-color: #000;
+}
+
+.bootstrap4 #technician_popup .head {
+    color: #6c757d;
+}
+
+.fabric #technician_popup .head {
+    background-color: #fff;
+    border-bottom: 1px solid #ccc;
+    color: #0078d7;
+    font-weight: 400;
+}
+
+.e-bigger #technician_popup .e-dropdownbase .e-list-item {
+    line-height: 40px;
+    height: 80px;
+}
+
+#technician_popup .ename {
+    display: block !important;
+    opacity: .87;
+    font-size: 16px;
+    margin-top: 9px;
+}
+
+#technician_popup .job {
+    opacity: .54;
+    font-size: 14px;
+    margin-top: -10px;
+    margin-bottom: 11px;
+}
+
+.bootstrap #technician_popup .job {
+    margin-top: 0px;
+}
+
+.bootstrap.e-bigger #technician_popup .job {
+    margin-top: -16px;
+}
+
+.e-bigger #technician_popup .job {
+    margin-top: -16px;
+}
+
+#technician_popup .empImage {
+    margin: 6px 16px;
+    float: left;
+    width: 50px;
+    height: 50px;
+}
+
+#technician_popup .e-dropdownbase .e-list-item * {
+    display: block;
+    text-indent: 0;
+}
+
+.bootstrap4 #technician_popup.e-popup .empImage {
+    margin: 0px 16px;
+}
+
+.bootstrap4.e-bigger #technician_popup.e-popup .empImage {
+    margin: 6px 16px;
+}
+
+.bootstrap4 #technician_popup.e-popup .job {
+    margin-top: 0;
+}
+
+.e-bigger.bootstrap4 #technician_popup.e-popup .job {
+    margin-top: -15px;
+}
+.fluent-dark .header {
+    background: #252423;
+    color: #2899F5;
+}
+
+.bootstrap5-dark .header {
+    background: #343A40;
+    color: #7B848D;
+}
+
+.fluent .header{
+     color: #2899F5;
+}
+
+.tailwind-dark .header {
+    background: #374151;
+    color: rgb(255, 255, 255);
+}
+
+.material3-dark .header,
+.material-dark .header {
+    background: rgb(66, 66, 66);
+    color: rgb(255, 255, 255);
+}
+
+.fabric-dark .header {
+    background: rgb(40, 39, 39);
+    color: rgb(255, 255, 255);
+}
+
+.bootstrap-dark .header {
+    background: rgb(49, 49, 49);
+    color: rgb(255, 255, 255);
+}

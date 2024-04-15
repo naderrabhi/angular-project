@@ -1,0 +1,108 @@
+.container {
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #e2e2e2;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+  }
+
+  .addForm {
+    display: flex;
+    align-items: center;
+  }
+  
+  .addForm input {
+    margin: 0!important;
+    padding: 14px;
+    border: 1px solid #ccc;
+    border-radius: 0 !important;
+  }
+  
+  .addForm button {
+    padding: 9px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    background-color: #4CAF50;
+    color: white;
+    width: auto;
+  }
+
+  .container label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .container input[type="text"],
+  .container input[type="checkbox"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+  
+  table {
+      border-collapse: collapse;
+      width: 100%;
+  }
+  
+  th, td {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 8px;
+  }
+  
+  th {
+      background-color: #f2f2f2;
+  }
+  
+  tr:nth-child(even) {
+      background-color: #f2f2f2;
+  }
+  
+  tr:nth-child(odd) {
+      background-color: #ffffff;
+  }
+  
+  tr:hover {
+      background-color: #e2e2e2;
+  }
+  
+  .container {
+      display: flex;
+      flex-direction: column;
+      align-items: start;
+    }
+  
+
+  
+    .editButton,
+  .deleteButton {
+    padding: 8px 15px;
+    font-size: 14px;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  .editButton {
+    background-color: #007bff;
+    border: 1px solid #007bff;
+  }
+  
+  .deleteButton {
+    background-color: #dc3545;
+    border: 1px solid #dc3545;
+  }
+  
+  .actionButtons {
+    width: 100%;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+  }
+  

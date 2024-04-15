@@ -1,0 +1,51 @@
+{
+  "name": "gmao",
+  "version": "0.0.0",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve --proxy-config proxyconfig.json",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development",
+    "test": "ng test"
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/animations": "^17.2.0",
+    "@angular/common": "^17.2.0",
+    "@angular/compiler": "^17.2.0",
+    "@angular/core": "^17.2.0",
+    "@angular/forms": "^17.2.0",
+    "@angular/platform-browser": "^17.2.0",
+    "@angular/platform-browser-dynamic": "^17.2.0",
+    "@angular/router": "^17.2.0",
+    "@syncfusion/ej2-angular-buttons": "^24.2.7",
+    "@syncfusion/ej2-angular-calendars": "^24.2.9",
+    "@syncfusion/ej2-angular-dropdowns": "^24.2.9",
+    "@syncfusion/ej2-angular-grids": "^24.2.9",
+    "@syncfusion/ej2-angular-inputs": "^24.2.9",
+    "@syncfusion/ej2-angular-lists": "^24.2.8",
+    "@syncfusion/ej2-angular-navigations": "^24.2.8",
+    "@syncfusion/ej2-angular-notifications": "^24.2.4",
+    "@syncfusion/ej2-angular-popups": "^24.2.10",
+    "@syncfusion/ej2-angular-progressbar": "^24.2.9",
+    "@syncfusion/ej2-angular-richtexteditor": "^24.2.9",
+    "@syncfusion/ej2-icons": "^25.1.35",
+    "bootstrap": "^5.3.3",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.3.0",
+    "zone.js": "~0.14.3"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "^17.2.0",
+    "@angular/cli": "^17.2.0",
+    "@angular/compiler-cli": "^17.2.0",
+    "@types/jasmine": "~5.1.0",
+    "jasmine-core": "~5.1.0",
+    "karma": "~6.4.0",
+    "karma-chrome-launcher": "~3.2.0",
+    "karma-coverage": "~2.2.0",
+    "karma-jasmine": "~5.1.0",
+    "karma-jasmine-html-reporter": "~2.1.0",
+    "typescript": "~5.3.2"
+  }
+}

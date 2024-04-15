@@ -1,0 +1,19 @@
+<div class="register-container">
+    <form class="register-form">
+        <h1>Sign Up</h1>
+        <input type="text" placeholder="First Name" [(ngModel)]="firstName" name="firstName" required>
+        <input type="text" placeholder="Last Name" [(ngModel)]="lastName" name="lastName" required>
+        <input type="text" placeholder="Email" [(ngModel)]="email" name="email" required>
+        <select (change)="onRoleChange($event)">
+            @for(role of rolesList; track role.value) {
+            <option [value]="role.value">{{role.text}}</option>
+            }
+        </select>
+        <input type="password" placeholder="Password" [(ngModel)]="password" name="password" required>
+        <button type="button" (click)="register()">Register</button>
+        <a class="signin-link" routerLink="/signin">Already have an account?</a>
+    </form>
+    @if(errorMessage){
+    <div>{{ errorMessage }}</div>
+    }
+</div>

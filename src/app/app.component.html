@@ -1,0 +1,45 @@
+<div class="control-section" id="reswrapper">
+    <!-- sample level element  -->
+    <!-- header-section  declaration -->
+    <div>
+        <ejs-toolbar id="resToolbar" (clicked)="toolbarCliked()">
+            <e-items>
+                <!-- <e-item prefixIcon="e-tbar-menu-icon tb-icons" tooltipText="Menu"></e-item> -->
+                <e-item>
+                    <ng-template #template>
+                        <div class="e-folder">
+                            <div class="e-folder-name">Fix Pirepheral</div>
+                        </div>
+                    </ng-template>
+                </e-item>
+            </e-items>
+        </ejs-toolbar>
+    </div>
+    <!-- end of header-section -->
+    @if(showSidebar) {
+    <ejs-sidebar id="sideTree" class="sidebar-treeview" #sidebarTreeviewInstance [width]="width" [target]="target"
+        [mediaQuery]="mediaQuery" [isOpen]="true">
+        <div class='main-menu'>
+            <!-- <div class="table-content">
+                <ejs-textbox id="resSearch" placeholder="Search..."></ejs-textbox>
+                <p class="main-menu-header">TABLE OF CONTENTS</p>
+            </div> -->
+            <div>
+                <ejs-treeview id='mainTree' cssClass="main-treeview" [fields]="fields" expandOn='Click'
+                    (nodeSelecting)="onNodeSelecting($event)">
+                </ejs-treeview>
+            </div>
+        </div>
+    </ejs-sidebar>
+    }
+
+    <!-- end of sidebar element -->
+    <!-- .main-sidebar-content declaration -->
+    <div class="main-sidebar-content" id="main-text">
+        <div class="sidebar-content">
+            <p class="paragraph-content">
+                <router-outlet></router-outlet>
+            </p>
+        </div>
+    </div>
+</div>

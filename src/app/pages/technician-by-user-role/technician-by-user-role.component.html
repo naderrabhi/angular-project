@@ -1,0 +1,81 @@
+<div class="control-section">
+    <ejs-grid #grid [dataSource]='technicianAssignedData' allowPaging='true' [pageSettings]='pageSettings'
+        (actionBegin)="actionBegin($event)" [pageSettings]='pageSettings' [editSettings]='editSettings'
+        [toolbar]='toolbar'>
+        <e-columns>
+            <e-column field='id' [visible]='false' headerText='ID' width='120' [allowEditing]="false" textAlign='Left'
+                isPrimaryKey='true'></e-column>
+
+            <e-column headerText='Name' width='130' textAlign='Center'>
+                <ng-template #template let-data>
+                    <span>{{data.peripheral?.name}}</span>
+                </ng-template>
+                <ng-template #editTemplate let-data>
+                    <ejs-textbox [value]="data.peripheral?.name" placeholder="Name" #requeteCount></ejs-textbox>
+                </ng-template>
+            </e-column>
+
+            <e-column headerText='Description' width='230' textAlign='Center'>
+                <ng-template #template let-data>
+                    <span>{{data.peripheral?.description}}</span>
+                </ng-template>
+                <ng-template #editTemplate let-data>
+                    <ejs-textbox [value]="data.peripheral?.description" placeholder="Description"
+                        #requeteCount></ejs-textbox>
+                </ng-template>
+            </e-column>
+
+            <e-column headerText='Type' width='130' textAlign='Center'>
+                <ng-template #template let-data>
+                    <span>{{data.peripheral?.type}}</span>
+                </ng-template>
+                <ng-template #editTemplate let-data>
+                    <ejs-textbox [value]="data.peripheral?.type" placeholder="Type" #requeteCount></ejs-textbox>
+                </ng-template>
+            </e-column>
+
+            <e-column headerText='Status' width='130' textAlign='Center'>
+                <ng-template #template let-data>
+                    <span>{{data.peripheral?.status}}</span>
+                </ng-template>
+                <ng-template #editTemplate let-data>
+                    <ejs-textbox [value]="data.peripheral?.status" placeholder="Status" #requeteCount></ejs-textbox>
+                </ng-template>
+            </e-column>
+
+            <e-column headerText='Created At' width='180' textAlign='Center'>
+                <ng-template #template let-data>
+                    <span>{{data.created_at}}</span>
+                </ng-template>
+                <ng-template #editTemplate let-data>
+                    <ejs-textbox [value]="data.created_at" placeholder="Created At" #requeteCount></ejs-textbox>
+                </ng-template>
+            </e-column>
+
+            <e-column field="confirmed" width="130" headerText="Confirmed?" editType="booleanedit"
+                [defaultValue]='true'></e-column>
+
+            <e-column headerText='Confirmed At' width='180' textAlign='Center'>
+                <ng-template #template let-data>
+                    <span>{{data.confirmed_at}}</span>
+                </ng-template>
+                <ng-template #editTemplate let-data>
+                    <ejs-textbox [value]="data.confirmed_at" placeholder="Confirmed At" #requeteCount></ejs-textbox>
+                </ng-template>
+            </e-column>
+
+            <e-column field="fixed" width="130" headerText="Fixed?" editType="booleanedit" [defaultValue]='true'></e-column>
+
+            <e-column headerText='Fixed At' width='180' textAlign='Center'>
+                <ng-template #template let-data>
+                    <span>{{data.fixed_at}}</span>
+                </ng-template>
+                <ng-template #editTemplate let-data>
+                    <ejs-textbox [value]="data.fixed_at" placeholder="Fixed At" #requeteCount></ejs-textbox>
+                </ng-template>
+            </e-column>
+
+        </e-columns>
+
+    </ejs-grid>
+</div>
