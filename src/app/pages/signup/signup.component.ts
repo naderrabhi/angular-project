@@ -26,6 +26,14 @@ export class SignupComponent {
       value: 2,
       text: 'TECHNICIAN',
     },
+    {
+      value: 3,
+      text: 'RESPONSABLE',
+    },
+    {
+      value: 4,
+      text: 'ADMIN',
+    },
   ];
 
   onRoleChange(event: any) {
@@ -49,6 +57,8 @@ export class SignupComponent {
         email: this.email,
         role: this.role,
         password: this.password,
+        disponible: true,
+        accepted: false
       })
       .subscribe(
         (data) => {
