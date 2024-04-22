@@ -40,7 +40,7 @@ export class UsersService {
   updateUser(user: Users): Observable<Users> {
     const token = this.authService.getToken();
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    const url = `${this.userApiUrl}/${user.id}/edit`;
+    const url = `${this.userApiUrl}/${user.id}/modifier`;
     return this.http.put<Users>(url, user, { headers });
   }
 
@@ -48,7 +48,7 @@ export class UsersService {
   deleteUser(id: number): Observable<any> {
     const token = this.authService.getToken();
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    const url = `${this.userApiUrl}/${id}/delete`;
+    const url = `${this.userApiUrl}/${id}/supprimer`;
     return this.http.delete(url, { headers });
   }
 }

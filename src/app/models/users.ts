@@ -1,10 +1,10 @@
 export class Users {
   public id?: number;
-  public password?: string;
-  public firstName!: string;
-  public lastName!: string;
+  public nom!: string;
+  public prenom!: string;
   public email!: string;
+  public password?: string;
   public role!: string;
-  public disponible?: boolean;
-  public accepted?: boolean;
+  public isAvailable?: boolean;
+  public isAccepted?: boolean;
 }

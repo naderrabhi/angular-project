@@ -152,72 +152,98 @@ export class AppComponent {
         this.data.push(
           {
             nodeId: '01',
-            nodeText: 'Dashboard',
+            nodeText: 'Admin',
             iconCss: 'icon-microchip icon',
-            path: 'dashboard',
+            path: 'admin',
             nodeChild: [
               {
                 nodeId: '01-01',
-                nodeText: 'All Users',
-                iconCss: 'icon-microchip icon',
-                path: 'all-users',
+                nodeText: 'Users',
+                iconCss: 'e-icons logout',
+                path: 'users',
+              },
+              {
+                nodeId: '01-02',
+                nodeText: 'Emplacements',
+                iconCss: 'e-icons logout',
+                path: 'emplacements',
+              },
+              {
+                nodeId: '01-03',
+                nodeText: 'Equipements',
+                iconCss: 'e-icons logout',
+                path: 'equipements',
               },
             ],
           },
           {
             nodeId: '02',
-            nodeText: 'Logout',
+            nodeText: 'déconnexion',
             iconCss: 'e-icons logout',
             path: '',
           }
         );
-        this.router.navigate(['/all-users']);
+        this.router.navigate(['/users']);
         break;
       case 'USER':
         this.data.push(
           {
             nodeId: '01',
-            nodeText: 'Peripheral',
+            nodeText: 'User',
             iconCss: 'icon-microchip icon',
-            path: 'peripheral',
+            path: 'user',
+            nodeChild: [
+              {
+                nodeId: '01-01',
+                nodeText: 'Equipements',
+                iconCss: 'e-icons logout',
+                path: 'user-equipements',
+              },
+              {
+                nodeId: '01-02',
+                nodeText: 'Ordre de travail',
+                iconCss: 'e-icons logout',
+                path: 'ordre-de-travail',
+              },
+            ],
           },
           {
             nodeId: '02',
-            nodeText: 'Logout',
+            nodeText: 'déconnexion',
             iconCss: 'e-icons logout',
             path: '',
           }
         );
-        this.router.navigate(['/peripheral']);
+        this.router.navigate(['/user']);
         break;
-      case 'TECHNICIAN':
+      case 'TECHNICIEN':
         this.data.push(
           {
             nodeId: '01',
-            nodeText: 'Technicians',
+            nodeText: 'Technicien',
             iconCss: 'icon-microchip icon',
-            path: 'technicians',
+            path: 'technicien',
           },
           {
             nodeId: '02',
-            nodeText: 'Logout',
+            nodeText: 'déconnexion',
             iconCss: 'e-icons logout',
             path: '',
           }
         );
-        this.router.navigate(['/technicians']);
+        this.router.navigate(['/technicien']);
         break;
       case 'RESPONSABLE':
         this.data.push(
           {
             nodeId: '01',
-            nodeText: 'Assignment Technicians',
+            nodeText: 'Responsable',
             iconCss: 'icon-microchip icon',
             path: 'responsable',
           },
           {
             nodeId: '02',
-            nodeText: 'Logout',
+            nodeText: 'déconnexion',
             iconCss: 'e-icons logout',
             path: '',
           }

@@ -11,8 +11,8 @@ import { Router, RouterModule } from '@angular/router';
   styleUrl: './signup.component.css',
 })
 export class SignupComponent {
-  firstName: string = '';
-  lastName: string = '';
+  nom: string = '';
+  prenom: string = '';
   email: string = '';
   role: string | undefined = 'USER';
   password: string = '';
@@ -52,13 +52,13 @@ export class SignupComponent {
   register() {
     this.authService
       .register({
-        firstName: this.firstName,
-        lastName: this.lastName,
+        nom: this.nom,
+        prenom: this.prenom,
         email: this.email,
         role: this.role,
         password: this.password,
-        disponible: true,
-        accepted: false
+        isAvailable: true,
+        isAccepted: false,
       })
       .subscribe(
         (data) => {

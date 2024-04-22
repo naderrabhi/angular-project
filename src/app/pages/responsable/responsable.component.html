@@ -1,0 +1,43 @@
+<div class="control-section">
+    <ejs-grid #grid [dataSource]='ordresDeTravailData' allowPaging='true' [pageSettings]='pageSettings'
+        (actionBegin)="actionBegin($event)" [pageSettings]='pageSettings' [editSettings]='editSettings'
+        [toolbar]='toolbar'>
+        <e-columns>
+            <e-column field='id' [visible]='false' headerText='ID' width='120' [allowEditing]="false" textAlign='Left'
+                isPrimaryKey='true'></e-column>
+            <e-column field='titre' headerText='Titre' width='120' textAlign='Right' isPrimaryKey='true'
+                [validationRules]='namerules'></e-column>
+            <e-column field='description' headerText='Description' width='120' format='C2' textAlign='Right'
+                [validationRules]='descriptionrules'></e-column>
+            <e-column field='statut' headerText='Statut' width='120' [validationRules]='typerules'></e-column>
+            <e-column field='priorite' headerText='Priorite' width='120' [validationRules]='typerules'></e-column>
+
+
+            <!-- <e-column headerText='Status' width='130' textAlign='Center'>
+                <ng-template #template let-data>
+                    <span>{{data.status}}</span>
+                </ng-template>
+                <ng-template #editTemplate let-data>
+                    <ejs-dropdownlist #status id="status" [dataSource]='statusData' placeholder="Status"
+                        [(value)]="statusSelectedItem" popupHeight='300px' floatLabelType='Always'></ejs-dropdownlist>
+                </ng-template>
+            </e-column> -->
+
+
+            <e-column headerText='Technicien' width='130' textAlign='Center'>
+                <ng-template #template let-data>
+                    <span>{{data.prenom}}</span>
+                </ng-template>
+                <ng-template #editTemplate let-data>
+                    <ejs-dropdownlist #technicien id="technicien" [dataSource]="technicienData" placeholder="Technicien"
+                        [(value)]="technicienSelectedItem" [fields]="technicienFields" popupHeight='300px'
+                        floatLabelType='Always'></ejs-dropdownlist>
+                </ng-template>
+            </e-column>
+
+
+        </e-columns>
+
+    </ejs-grid>
+
+</div>

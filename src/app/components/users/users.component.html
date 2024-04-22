@@ -1,0 +1,29 @@
+<div class="control-section">
+    <ejs-grid #grid [dataSource]='usersData' allowPaging='true' [pageSettings]='pageSettings'
+        (actionBegin)="actionBegin($event)" [pageSettings]='pageSettings' [editSettings]='editSettings'
+        [toolbar]='toolbar'>
+        <e-columns>
+            <e-column field='id' [visible]='false' headerText='ID' width='120' [allowEditing]="false" textAlign='Left'
+                isPrimaryKey='true'></e-column>
+            <e-column field='nom' textAlign='Left' headerText='Nom' width='120' [allowEditing]="true"
+                [validationRules]='nomrules'></e-column>
+            <e-column field='prenom' textAlign='Left' headerText='Prenom' width='120' format='C2' [allowEditing]="true"
+                [validationRules]='prenomrules'></e-column>
+            <e-column field='email' headerText='Email' width='200' format='C2' textAlign='Left' [allowEditing]="true"
+                [validationRules]='emailrules'></e-column>
+            <e-column headerText='Role' width='150' textAlign='Center'>
+                <ng-template #template let-data>
+                    <span>{{data.role}}</span>
+                </ng-template>
+                <ng-template #editTemplate let-data>
+                    <ejs-dropdownlist #role id="role" [dataSource]='roleData' placeholder="Roles"
+                        [(value)]="roleSelectedItem" popupHeight='300px' floatLabelType='Always'></ejs-dropdownlist>
+                </ng-template>
+            </e-column>
+            <e-column field="isAvailable" headerText="isAvailable?" editType="booleanedit"
+                [defaultValue]='true'></e-column>
+            <e-column field="isAccepted" headerText="isAccepted?" editType="booleanedit"
+                [defaultValue]='true'></e-column>
+        </e-columns>
+    </ejs-grid>
+</div>

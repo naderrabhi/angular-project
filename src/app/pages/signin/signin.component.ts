@@ -22,10 +22,7 @@ export class SigninComponent {
   password: string = '';
   errorMessage: string = '';
 
-  constructor(
-    private authService: AuthService,
-    private router: Router,
-  ) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit() {
     this.executeReloadOnce();
@@ -70,15 +67,15 @@ export class SigninComponent {
           switch (data.user.role) {
             case 'ADMIN':
               this.showToast(data.message, 'success');
-              this.router.navigate(['/all-users']);
+              this.router.navigate(['/users']);
               break;
             case 'USER':
               this.showToast(data.message, 'success');
-              this.router.navigate(['/peripheral']);
+              this.router.navigate(['/user']);
               break;
-            case 'TECHNICIAN':
+            case 'TECHNICIEN':
               this.showToast(data.message, 'success');
-              this.router.navigate(['/technicians']);
+              this.router.navigate(['/technicien']);
               break;
             case 'RESPONSABLE':
               this.showToast(data.message, 'success');
