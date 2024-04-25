@@ -16,7 +16,7 @@ export const routes: Routes = [
   { path: 'signup', component: SignupComponent },
   {
     path: 'user',
-    component: OrdreDeTravailComponent,
+    component: UserEquipementsComponent,
     canActivate: [AuthGuard],
     data: { roles: ['USER'] },
   },

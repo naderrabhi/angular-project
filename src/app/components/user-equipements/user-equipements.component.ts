@@ -129,12 +129,12 @@ export class UserEquipementsComponent {
   createOrdresDeTravail(ordresDeTravail: OrdresDeTravail, args: any) {
     ordresDeTravail.titre = args.data.titre;
     ordresDeTravail.description = args.data.descriptionordre;
-    ordresDeTravail.priorite = this.prioriteSelectedItem;
+    // ordresDeTravail.priorite = this.prioriteSelectedItem;
     ordresDeTravail.statut = 'En panne';
     ordresDeTravail.utilisateur_id = `${this.userIdReporter}`;
     ordresDeTravail.equipement_id = `${args.data.id}`;
 
-    this.priorite.clear();
+    // this.priorite.clear();
 
     return ordresDeTravail;
   }

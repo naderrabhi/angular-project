@@ -10,8 +10,17 @@
             <e-column field='description' headerText='Description' width='120' format='C2' textAlign='Right'
                 [validationRules]='descriptionrules'></e-column>
             <e-column field='statut' headerText='Statut' width='120' [validationRules]='typerules'></e-column>
-            <e-column field='priorite' headerText='Priorite' width='120' [validationRules]='typerules'></e-column>
+            <!-- <e-column field='priorite' headerText='Priorite' width='120' [validationRules]='typerules'></e-column> -->
 
+            <e-column headerText='Priorité' width='150' textAlign='Center'>
+                <ng-template #template let-data>
+                    <span>{{data.priorite}}</span>
+                </ng-template>
+                <ng-template #editTemplate let-data>
+                    <ejs-dropdownlist #priorite id="priorite" [dataSource]='prioriteData' placeholder="Priorité"
+                        [(value)]="prioriteSelectedItem" popupHeight='300px' floatLabelType='Always'></ejs-dropdownlist>
+                </ng-template>
+            </e-column>
 
             <!-- <e-column headerText='Status' width='130' textAlign='Center'>
                 <ng-template #template let-data>

@@ -27,7 +27,6 @@ import {
   DialogUtility,
 } from '@syncfusion/ej2-angular-popups';
 import { OrdresDeTravail } from '../../models/ordres-de-travail';
-import { TechnicianAssignment } from '../../models/technician-assignment';
 import { AuthService } from '../../services/auth/auth.service';
 import { OrdresDeTravailService } from '../../services/ordres-de-travail/ordres-de-travail.service';
 import { Equipements } from '../../models/equipements';
@@ -77,7 +76,6 @@ export class OrdreDeTravailComponent {
   public ordresDeTravailData!: OrdresDeTravail[];
   public equipementsData!: Equipements[];
   public emplacementsData!: Emplacements[];
-  public technicianAssignedData!: TechnicianAssignment[];
 
   public editSettings!: Object;
   public toolbar!: string[];
@@ -159,7 +157,6 @@ export class OrdreDeTravailComponent {
     ordresDeTravail.titre = args.data.titre;
     ordresDeTravail.description = args.data.description;
     ordresDeTravail.statut = args.data.statut;
-    ordresDeTravail.priorite = this.prioriteSelectedItem;
 
     ordresDeTravail.utilisateur_id = `${this.userIdReporter}`;
     ordresDeTravail.equipement_id = `${args.data.id}`;
@@ -223,7 +220,10 @@ export class OrdreDeTravailComponent {
             column.headerText === 'Nom Equipement') ||
           (column &&
             typeof column !== 'string' &&
-            column.headerText === 'Emplacement')
+            column.headerText === 'Emplacement') ||
+          (column &&
+            typeof column !== 'string' &&
+            column.headerText === 'Priorité')
         ) {
           column.visible = false;
         }

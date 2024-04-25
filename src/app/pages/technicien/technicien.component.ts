@@ -22,9 +22,6 @@ import {
   AnimationSettingsModel,
   DialogModule,
 } from '@syncfusion/ej2-angular-popups';
-import { TechnicianAssignment } from '../../models/technician-assignment';
-import { PeripheralService } from '../../services/peripheral/peripheral.service';
-import { Peripheral } from '../../models/peripheral';
 import { UsersService } from '../../services/users/users.service';
 import { AuthService } from '../../services/auth/auth.service';
 import { AffectationDesOrdresService } from '../../services/affectation-des-ordres/affectation-des-ordres.service';
@@ -54,7 +51,6 @@ import { OrdresDeTravailService } from '../../services/ordres-de-travail/ordres-
   providers: [
     OrdresDeTravailService,
     AffectationDesOrdresService,
-    PeripheralService,
     ToolbarService,
     EditService,
     PageService,
@@ -67,8 +63,7 @@ import { OrdresDeTravailService } from '../../services/ordres-de-travail/ordres-
 export class TechnicienComponent {
   @ViewChild('grid') grid!: GridComponent;
 
-  public affectationDesOrdresData!: TechnicianAssignment[];
-  public peripheralData!: Peripheral[];
+  public affectationDesOrdresData!: AffectationDesOrdres[];
   public existedAssignedTechnicien!: any;
 
   public editSettings!: Object;
@@ -79,8 +74,6 @@ export class TechnicienComponent {
   public pageSettings!: Object;
   public editparams!: Object;
 
-  // public statusData: string[] = ['BROKEN', 'PENDING', 'IN PROGRESS', 'FIXED'];
-  // public statusFields: Object = { text: 'libelle' };
   public statusSelectedItem!: any;
   public peripheralForUpdate!: any;
   public dialogObj: any;
@@ -93,7 +86,6 @@ export class TechnicienComponent {
   private technicianId!: number;
 
   constructor(
-    private peripheralService: PeripheralService,
     private usersService: UsersService,
     private authService: AuthService,
     private affectationDesOrdresService: AffectationDesOrdresService,
@@ -103,7 +95,6 @@ export class TechnicienComponent {
   public ngOnInit(): void {
     const token = this.authService.getToken();
     if (token) {
-      // Optionally fetch user information if applicable
       this.authService
         .getCurrentUserInformation(token)
         .subscribe((userData) => {
@@ -115,10 +106,6 @@ export class TechnicienComponent {
             });
         });
     }
-
-    // this.peripheralService.getPeripherals().subscribe((data) => {
-    //   this.peripheralData = data;
-    // });
 
     this.editSettings = {
       allowEditing: true,
@@ -310,5 +297,18 @@ export class TechnicienComponent {
     const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 
     return formattedDate;
+  }
+
+  getColorByPriority(priority: string): string {
+    switch (priority) {
+      case 'Haute':
+        return 'red';
+      case 'Moyenne':
+        return 'orange';
+      case 'Faible':
+        return 'blue';
+      default:
+        return 'black';
+    }
   }
 }

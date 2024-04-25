@@ -26,8 +26,6 @@ import {
   DialogModule,
   DialogUtility,
 } from '@syncfusion/ej2-angular-popups';
-import { PeripheralService } from '../../services/peripheral/peripheral.service';
-import { TechnicianAssignment } from '../../models/technician-assignment';
 import { UsersService } from '../../services/users/users.service';
 import { Users } from '../../models/users';
 import { OrdresDeTravailService } from '../../services/ordres-de-travail/ordres-de-travail.service';
@@ -57,7 +55,6 @@ import { AffectationDesOrdresService } from '../../services/affectation-des-ordr
   providers: [
     AffectationDesOrdresService,
     OrdresDeTravailService,
-    PeripheralService,
     ToolbarService,
     EditService,
     PageService,
@@ -68,6 +65,7 @@ import { AffectationDesOrdresService } from '../../services/affectation-des-ordr
   ],
 })
 export class ResponsableComponent {
+  @ViewChild('priorite') priorite!: DropDownListComponent;
   @ViewChild('status') status!: DropDownListComponent;
   @ViewChild('users') users!: DropDownListComponent;
   @ViewChild('Dialog') public Dialog!: DialogComponent;
@@ -76,7 +74,6 @@ export class ResponsableComponent {
   public ordresDeTravailData!: OrdresDeTravail[];
   public technicienData!: Users[];
 
-  public technicianAssignedData!: TechnicianAssignment[];
   public editSettings!: Object;
   public toolbar!: string[];
   public namerules!: Object;
@@ -85,7 +82,9 @@ export class ResponsableComponent {
   public pageSettings!: Object;
   public editparams!: Object;
 
-  public statusData: string[] = ['BROKEN', 'PENDING', 'IN PROGRESS', 'FIXED'];
+  public prioriteData: string[] = ['Faible', 'Moyenne', 'Haute'];
+  public prioriteSelectedItem!: any;
+
   public statusSelectedItem!: any;
   public technicienSelectedItem!: any;
   public peripheralForUpdate!: any;
@@ -101,7 +100,6 @@ export class ResponsableComponent {
   public technicienFields: Object = { text: 'nom', value: 'id' };
 
   constructor(
-    private peripheralService: PeripheralService,
     private usersService: UsersService,
     private ordresDeTravailService: OrdresDeTravailService,
     private affectationDesOrdresService: AffectationDesOrdresService
@@ -109,7 +107,6 @@ export class ResponsableComponent {
 
   public ngOnInit(): void {
     this.usersService.getUsers().subscribe((data: any) => {
-      console.log(data);
       this.technicienData = data.user.filter(
         (user: any) => user.role == 'TECHNICIEN' && user.isAvailable
       );
@@ -124,10 +121,10 @@ export class ResponsableComponent {
     this.editSettings = {
       allowEditing: true,
       allowAdding: false,
-      allowDeleting: false,
+      allowDeleting: true,
       mode: 'Dialog',
     };
-    this.toolbar = ['Edit'];
+    this.toolbar = ['Edit', 'Delete'];
     this.namerules = { required: true };
     this.typerules = { required: true };
     this.descriptionrules = { required: true };
@@ -154,51 +151,31 @@ export class ResponsableComponent {
         affectationDesOrdres,
         args
       );
-      this.affectationDesOrdresService
-        .createAffectationDeOrdre(affectationDesOrdres)
-        .subscribe((resultat) => {
-          let existedAssignedTechnicien = this.technicienData.filter(
-            (user) => user.id == this.technicienSelectedItem
-          )[0];
-          existedAssignedTechnicien.isAvailable = false;
 
-          this.usersService
-            .updateUser(existedAssignedTechnicien)
-            .subscribe((data) => {});
-
-          this.ordresDeTravailService
-            .getOrdreDeTravailById(args.data.id)
-            .subscribe(
-              (ordresDeTravail: any) => {
-                if (ordresDeTravail) {
-                  // Check if peripheral exists before updating
-                  ordresDeTravail.data.statut = 'En attente';
-                  this.ordresDeTravailService
-                    .updateOrdreDeTravail(ordresDeTravail.data)
-                    .subscribe(
-                      (updatedOrdresDeTravail) => {
+      this.ordresDeTravailService
+        .getOrdreDeTravailById(args.data.id)
+        .subscribe((ordresDeTravail: any) => {
+          if (ordresDeTravail) {
+            ordresDeTravail.data.priorite = this.prioriteSelectedItem;
+            ordresDeTravail.data.statut = 'En attente';
+            this.ordresDeTravailService
+              .updateOrdreDeTravail(ordresDeTravail.data)
+              .subscribe(() => {
+                this.affectationDesOrdresService
+                  .createAffectationDeOrdre(affectationDesOrdres)
+                  .subscribe(() => {
+                    let existedAssignedTechnicien = this.technicienData.filter(
+                      (user) => user.id == this.technicienSelectedItem
+                    )[0];
+                    existedAssignedTechnicien.isAvailable = false;
+                    this.usersService
+                      .updateUser(existedAssignedTechnicien)
+                      .subscribe((data) => {
                         this.ngOnInit();
-                      },
-                      (error) => {
-                        console.error(
-                          'Error updating Ordres de travail:',
-                          error
-                        );
-                      }
-                    );
-                } else {
-                  console.error(
-                    'Ordres de travail non trouvée:',
-                    this.ordresDeTravailId
-                  );
-                }
-              },
-              (error) => {
-                console.error('Error fetching peripheral:', error);
-              }
-            );
-
-          this.ngOnInit();
+                      });
+                  });
+              });
+          }
         });
     }
 
@@ -206,9 +183,11 @@ export class ResponsableComponent {
       args.cancel = true;
       const deletedDataId = args.data[0].id;
       this.dialogObj = DialogUtility.confirm({
-        title: 'Supprimer Peripheral',
-        content: 'Vous voulez supprimer cette Peripheral?',
-        okButton: { click: this.deletePeripheral.bind(this, deletedDataId) },
+        title: `Supprimer ${args.data[0].title}`,
+        content: 'Vous voulez supprimer cette ordre de travail?',
+        okButton: {
+          click: this.deleteOrdresDeTravail.bind(this, deletedDataId),
+        },
         cancelButton: { click: this.confirmCancelAction.bind(this) },
         position: { X: 'center', Y: 'center' },
         closeOnEscape: true,
@@ -216,11 +195,11 @@ export class ResponsableComponent {
     }
 
     if (args.requestType === 'beginEdit') {
-      this.peripheralService
-        .getPeripheralById(args.rowData.id)
+      this.ordresDeTravailService
+        .getOrdreDeTravailById(args.rowData.id)
         .subscribe((response: any) => {
           this.peripheralForUpdate = response.data;
-          this.status.value = this.peripheralForUpdate.status;
+          this.priorite.value = this.peripheralForUpdate.priorite;
         });
     }
 
@@ -234,7 +213,8 @@ export class ResponsableComponent {
         if (
           column &&
           typeof column !== 'string' &&
-          column.headerText !== 'Technicien'
+          column.headerText !== 'Technicien' &&
+          column.headerText !== 'Priorité'
         ) {
           column.visible = false;
         }
@@ -246,8 +226,8 @@ export class ResponsableComponent {
     this.dialogObj.hide();
   }
 
-  public deletePeripheral(id: any) {
-    this.peripheralService.deletePeripheral(id).subscribe((res) => {
+  public deleteOrdresDeTravail(id: any) {
+    this.ordresDeTravailService.deleteOrdreDeTravail(id).subscribe((res) => {
       this.dialogObj.hide();
       this.ordresDeTravailData = this.ordresDeTravailData.filter(
         (item) => item.id !== id
