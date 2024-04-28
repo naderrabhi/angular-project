@@ -1,7 +1,7 @@
 <div class="control-section">
     <ejs-grid #grid [dataSource]='usersData' allowPaging='true' [pageSettings]='pageSettings'
-        (actionBegin)="actionBegin($event)" [pageSettings]='pageSettings' [editSettings]='editSettings'
-        [toolbar]='toolbar'>
+        actionComplete="actionComplete" (actionBegin)="actionBegin($event)" [pageSettings]='pageSettings'
+        [editSettings]='editSettings' [toolbar]='toolbar'>
         <e-columns>
             <e-column field='id' [visible]='false' headerText='ID' width='120' [allowEditing]="false" textAlign='Left'
                 isPrimaryKey='true'></e-column>
@@ -11,6 +11,8 @@
                 [validationRules]='prenomrules'></e-column>
             <e-column field='email' headerText='Email' width='200' format='C2' textAlign='Left' [allowEditing]="true"
                 [validationRules]='emailrules'></e-column>
+            <e-column field='password' [visible]="false" type="password" headerText='Password' width='200' format='C2'
+                textAlign='Left' [allowEditing]="true" [validationRules]='passwordrules'></e-column>
             <e-column headerText='Role' width='150' textAlign='Center'>
                 <ng-template #template let-data>
                     <span>{{data.role}}</span>

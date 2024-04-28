@@ -34,13 +34,10 @@
                 </ng-template>
             </e-column>
 
-            <e-column headerText='Priorité' width='130' textAlign='Center'>
+            <e-column headerText='Urgent?' width='130' textAlign='Center'>
                 <ng-template #template let-data>
-                    <span [style.color]="getColorByPriority(data.ordreTravail?.priorite)" >{{data.ordreTravail?.priorite}}</span>
-                </ng-template>
-                <ng-template #editTemplate let-data>
-                    <ejs-textbox [value]="data.ordreTravail?.priorite" placeholder="Priorité"
-                        #requeteCount></ejs-textbox>
+                    <span
+                        [style.color]="getColorByUrgent(data.ordreTravail?.urgent)">{{data.ordreTravail?.urgent}}</span>
                 </ng-template>
             </e-column>
 

@@ -1,19 +1,37 @@
-<div class="register-container">
+<!-- <div class="register-container">
     <form class="register-form">
-        <h1>Sign Up</h1>
-        <input type="text" placeholder="First Name" [(ngModel)]="nom" name="Nom" required>
-        <input type="text" placeholder="Last Name" [(ngModel)]="prenom" name="Prenom" required>
+        <h1>S'inscrire</h1>
+        <input type="text" placeholder="Nom" [(ngModel)]="nom" name="nom" required>
+        <input type="text" placeholder="Prenom" [(ngModel)]="prenom" name="prenom" required>
         <input type="text" placeholder="Email" [(ngModel)]="email" name="email" required>
         <select (change)="onRoleChange($event)">
             @for(role of rolesList; track role.value) {
             <option [value]="role.value">{{role.text}}</option>
             }
         </select>
-        <input type="password" placeholder="Password" [(ngModel)]="password" name="password" required>
-        <button type="button" (click)="register()">Register</button>
-        <a class="signin-link" routerLink="/signin">Already have an account?</a>
+        <input type="password" placeholder="Mot de passe" [(ngModel)]="password" name="password" required>
+        <button type="button" (click)="register()">Enregistrer</button>
+        <a class="signin-link" routerLink="/signin">Vous avez déjà un compte?</a>
     </form>
     @if(errorMessage){
     <div>{{ errorMessage }}</div>
     }
-</div>
+</div> -->
+
+<main class="container">
+    <form>
+        <input type="text" placeholder="Prénom" [(ngModel)]="prenom" name="prenom" required />
+        <input type="text" placeholder="Nom" [(ngModel)]="nom" name="nom" required />
+        <input type="email" placeholder="Adresse e-mail" [(ngModel)]="email" name="email" required />
+        <select (change)="onRoleChange($event)" class="custom-select">
+            @for(role of rolesList; track role.value) {
+            <option [value]="role.value">{{role.text}}</option>
+            }
+        </select>
+        <input type="password" placeholder="Mot de passe" [(ngModel)]="password" name="password" required />
+        <button class="btn btn-green" (click)="register()">Inscrivez-vous</button>
+        <small>
+            <a href="#" routerLink="/signin">Vous avez déjà un compte ?</a>
+        </small>
+    </form>
+</main>

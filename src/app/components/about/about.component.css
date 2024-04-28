@@ -1,0 +1,70 @@
+    .about-container {
+    display: flex; /* Use flexbox for layout */
+    justify-content: space-evenly;
+    align-items: center;
+    flex-wrap: wrap; /* Allow content to wrap if necessary on smaller screens */
+    padding: 50px;
+    height: 100vh;
+    background-color: #9ACD32;
+    color: #fff;
+    font-family: 'fontello';
+  }
+  
+  .about-image {
+    width: 400px; /* Set image width to occupy half the container */
+    object-fit: cover; /* Ensure image fills its space */
+    margin-right: 20px; /* Add space between image and text */
+
+  }
+  
+  .about-text {
+    width: 50%; /* Set text area to occupy half the container */
+  }
+  
+  .about-title {
+    font-size: 2em;
+    margin-bottom: 20px;
+  }
+  
+  .about-description {
+    font-size: 1.2em;
+    line-height: 1.5;
+    margin-bottom: 40px;
+  }
+  
+  .about-features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 20px 0;
+  }
+  
+  .about-features li {
+    margin-bottom: 10px;
+  }
+  
+  .about-button {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+  
+  .about-button:hover {
+    background-color: #444;
+  }
+  
+  /* Optional media queries for responsive adjustments (e.g., adjust image width on smaller screens) */
+  @media (max-width: 768px) {
+    .about-image {
+      width: 100%; /* Make image full width on smaller screens */
+      margin-right: 0;
+    }
+  
+    .about-text {
+      width: 100%; /* Make text area full width on smaller screens */
+    }
+  }

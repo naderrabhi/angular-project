@@ -21,6 +21,7 @@ import { ToolbarModule } from '@syncfusion/ej2-angular-navigations';
 import {
   AnimationSettingsModel,
   DialogModule,
+  DialogUtility,
 } from '@syncfusion/ej2-angular-popups';
 import { UsersService } from '../../services/users/users.service';
 import { AuthService } from '../../services/auth/auth.service';
@@ -110,10 +111,10 @@ export class TechnicienComponent {
     this.editSettings = {
       allowEditing: true,
       allowAdding: false,
-      allowDeleting: false,
+      allowDeleting: true,
       mode: 'Dialog',
     };
-    this.toolbar = ['Edit'];
+    this.toolbar = ['Edit', 'Delete'];
     this.namerules = { required: true };
     this.typerules = { required: true };
     this.descriptionrules = { required: true };
@@ -129,24 +130,25 @@ export class TechnicienComponent {
     affectationDesOrdres.reparer = args.data.reparer;
 
     let formattedDate = this.getFormattedDate();
+
     if (affectationDesOrdres.confirmer && !affectationDesOrdres.reparer) {
       affectationDesOrdres.date_confirmation = formattedDate;
       affectationDesOrdres.date_resolution = 'null';
     } else if (
-      affectationDesOrdres.reparer &&
-      !affectationDesOrdres.confirmer
+      !affectationDesOrdres.confirmer &&
+      affectationDesOrdres.reparer
     ) {
-      affectationDesOrdres.date_confirmation = formattedDate;
       affectationDesOrdres.date_resolution = formattedDate;
       affectationDesOrdres.confirmer = true;
+      affectationDesOrdres.date_confirmation = formattedDate;
     } else if (
-      !affectationDesOrdres.reparer &&
-      !affectationDesOrdres.confirmer
+      !affectationDesOrdres.confirmer &&
+      !affectationDesOrdres.reparer
     ) {
       affectationDesOrdres.date_confirmation = 'null';
       affectationDesOrdres.date_resolution = 'null';
     } else {
-      affectationDesOrdres.date_confirmation = formattedDate;
+      // affectationDesOrdres.date_confirmation = formattedDate;
       affectationDesOrdres.date_resolution = formattedDate;
     }
 
@@ -269,6 +271,24 @@ export class TechnicienComponent {
       }
     }
 
+    if (args.requestType === 'delete') {
+      args.cancel = true;
+      const deletedDataId = args.data[0].id;
+      this.dialogObj = DialogUtility.confirm({
+        title: `Supprimer ${args.data[0].ordreTravail.titre}`,
+        content: 'Vous voulez supprimer cette affectation de ordre?',
+        okButton: {
+          click: this.deleteAffectationDeOrdresDeTravail.bind(
+            this,
+            deletedDataId
+          ),
+        },
+        cancelButton: { click: this.confirmCancelAction.bind(this) },
+        position: { X: 'center', Y: 'center' },
+        closeOnEscape: true,
+      });
+    }
+
     if (args.requestType === 'refresh') {
       for (var i = 0; i < this.grid.columns.length; i++) {
         const column = this.grid.columns[i];
@@ -299,14 +319,26 @@ export class TechnicienComponent {
     return formattedDate;
   }
 
-  getColorByPriority(priority: string): string {
-    switch (priority) {
-      case 'Haute':
+  private confirmCancelAction() {
+    this.dialogObj.hide();
+  }
+
+  public deleteAffectationDeOrdresDeTravail(id: any) {
+    this.affectationDesOrdresService
+      .deleteAffectationDeOrdre(id)
+      .subscribe((res) => {
+        this.dialogObj.hide();
+        this.affectationDesOrdresData = this.affectationDesOrdresData.filter(
+          (item) => item.id !== id
+        );
+        this.ngOnInit();
+      });
+  }
+
+  getColorByUrgent(urgent: boolean): string {
+    switch (urgent) {
+      case true:
         return 'red';
-      case 'Moyenne':
-        return 'orange';
-      case 'Faible':
-        return 'blue';
       default:
         return 'black';
     }

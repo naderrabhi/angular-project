@@ -10,32 +10,22 @@
             <e-column field='description' headerText='Description' width='120' format='C2' textAlign='Right'
                 [validationRules]='descriptionrules'></e-column>
             <e-column field='statut' headerText='Statut' width='120' [validationRules]='typerules'></e-column>
-            <!-- <e-column field='priorite' headerText='Priorite' width='120' [validationRules]='typerules'></e-column> -->
 
-            <e-column headerText='Priorité' width='150' textAlign='Center'>
+            <e-column headerText='Equipement' width='150' textAlign='Center'>
                 <ng-template #template let-data>
-                    <span>{{data.priorite}}</span>
-                </ng-template>
-                <ng-template #editTemplate let-data>
-                    <ejs-dropdownlist #priorite id="priorite" [dataSource]='prioriteData' placeholder="Priorité"
-                        [(value)]="prioriteSelectedItem" popupHeight='300px' floatLabelType='Always'></ejs-dropdownlist>
+                    <span>{{data.equipement?.nom}}</span>
                 </ng-template>
             </e-column>
 
-            <!-- <e-column headerText='Status' width='130' textAlign='Center'>
+            <e-column headerText='Empalcement' width='150' textAlign='Center'>
                 <ng-template #template let-data>
-                    <span>{{data.status}}</span>
+                    <span>{{data.emplacement?.nom}}</span>
                 </ng-template>
-                <ng-template #editTemplate let-data>
-                    <ejs-dropdownlist #status id="status" [dataSource]='statusData' placeholder="Status"
-                        [(value)]="statusSelectedItem" popupHeight='300px' floatLabelType='Always'></ejs-dropdownlist>
-                </ng-template>
-            </e-column> -->
+            </e-column>
 
-
-            <e-column headerText='Technicien' width='130' textAlign='Center'>
+            <e-column headerText='Technicien' [visible]="false" width='130' textAlign='Center'>
                 <ng-template #template let-data>
-                    <span>{{data.prenom}}</span>
+                    <span>{{data.user?.prenom}}</span>
                 </ng-template>
                 <ng-template #editTemplate let-data>
                     <ejs-dropdownlist #technicien id="technicien" [dataSource]="technicienData" placeholder="Technicien"
@@ -43,6 +33,9 @@
                         floatLabelType='Always'></ejs-dropdownlist>
                 </ng-template>
             </e-column>
+
+            <e-column field="urgent" headerText="Urgent?" editType="booleanedit" [defaultValue]='true'></e-column>
+
 
 
         </e-columns>

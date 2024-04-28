@@ -6,9 +6,21 @@
             <e-column field='id' [visible]='false' headerText='ID' width='120' [allowEditing]="false" textAlign='Left'
                 isPrimaryKey='true'></e-column>
 
+            <e-column headerText='Emplacement' isPrimaryKey='true' width='150' textAlign='Center'>
+                <ng-template #template let-data>
+                    <span>{{data.emplacement?.nom}}</span>
+                </ng-template>
+                <ng-template #editTemplate let-data>
+                    <ejs-dropdownlist isPrimaryKey='true' #emplacement id="emplacement" placeholder="Emplacement"
+                        [dataSource]='emplacementsData' [fields]="emplacementsFields"
+                        [(value)]="emplacementSelectedItem" popupHeight='300px' floatLabelType='Always'
+                        (change)="onEmplacementChange($event)"></ejs-dropdownlist>
+                </ng-template>
+            </e-column>
+
             <e-column headerText='Nom Equipement' isPrimaryKey='true' width='150' textAlign='Center'>
                 <ng-template #template let-data>
-                    <span>{{data.equipement.nom}}</span>
+                    <span>{{data.equipement?.nom}}</span>
                 </ng-template>
                 <ng-template #editTemplate let-data>
                     <ejs-dropdownlist #equipement id="equipement" [dataSource]='equipementsData'
@@ -17,17 +29,7 @@
                 </ng-template>
             </e-column>
 
-            <e-column headerText='Emplacement' isPrimaryKey='true' width='150' textAlign='Center'>
-                <ng-template #template let-data>
-                    <span>{{data.emplacement.nom}}</span>
-                </ng-template>
-                <ng-template #editTemplate let-data>
-                    <ejs-dropdownlist isPrimaryKey='true' #emplacement id="emplacement" placeholder="Emplacement"
-                        [dataSource]='emplacementsData' [fields]="emplacementsFields"
-                        [(value)]="emplacementSelectedItem" popupHeight='300px'
-                        floatLabelType='Always'></ejs-dropdownlist>
-                </ng-template>
-            </e-column>
+
 
             <e-column field='titre' headerText='Titre' width='250' textAlign='Left' isPrimaryKey='true'
                 [validationRules]='titrerules'></e-column>
@@ -36,15 +38,7 @@
             <e-column field='statut' headerText='Statut' width='120' format='C2' isPrimaryKey='true' textAlign='Left'
                 [validationRules]='statutrules'></e-column>
 
-            <e-column headerText='Priorité' width='150' textAlign='Center'>
-                <ng-template #template let-data>
-                    <span>{{data.priorite}}</span>
-                </ng-template>
-                <ng-template #editTemplate let-data>
-                    <ejs-dropdownlist #priorite id="priorite" [dataSource]='prioriteData' placeholder="Priorité"
-                        [(value)]="prioriteSelectedItem" popupHeight='300px' floatLabelType='Always'></ejs-dropdownlist>
-                </ng-template>
-            </e-column>
+            <e-column field="urgent" headerText="Urgent?" editType="booleanedit" [defaultValue]='true'></e-column>
         </e-columns>
     </ejs-grid>
 </div>

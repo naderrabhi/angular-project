@@ -29,6 +29,14 @@ export class EquipementsService {
     return this.http.get<Equipements>(url, { headers });
   }
 
+  // Get equipements by Emplacement ID
+  getEquipementsByEmpalcementId(id: number): Observable<Equipements> {
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    const url = `${this.equipementsApiUrl}/emplacements/${id}`;
+    return this.http.get<Equipements>(url, { headers });
+  }
+
   // Create a new equipement
   createEquipement(equipement: Equipements): Observable<Equipements> {
     const token = this.authService.getToken();

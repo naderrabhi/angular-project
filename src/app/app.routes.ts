@@ -8,27 +8,20 @@ import { UsersComponent } from './components/users/users.component';
 import { EmplacementsComponent } from './components/emplacements/emplacements.component';
 import { EquipementsComponent } from './components/equipements/equipements.component';
 import { OrdreDeTravailComponent } from './components/ordre-de-travail/ordre-de-travail.component';
-import { UserEquipementsComponent } from './components/user-equipements/user-equipements.component';
+import { HomeComponent } from './pages/home/home.component';
+import { AboutComponent } from './components/about/about.component';
+import { ContactComponent } from './components/contact/contact.component';
 
 export const routes: Routes = [
-  { path: '', redirectTo: '/signin', pathMatch: 'full' },
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'signin', component: SigninComponent },
   { path: 'signup', component: SignupComponent },
+  { path: 'home', component: HomeComponent, pathMatch: 'full' },
+  { path: 'about', component: AboutComponent, pathMatch: 'full' },
+  { path: 'contact', component: ContactComponent, pathMatch: 'full' },
   {
     path: 'user',
-    component: UserEquipementsComponent,
-    canActivate: [AuthGuard],
-    data: { roles: ['USER'] },
-  },
-  {
-    path: 'ordre-de-travail',
     component: OrdreDeTravailComponent,
-    canActivate: [AuthGuard],
-    data: { roles: ['USER'] },
-  },
-  {
-    path: 'user-equipements',
-    component: UserEquipementsComponent,
     canActivate: [AuthGuard],
     data: { roles: ['USER'] },
   },

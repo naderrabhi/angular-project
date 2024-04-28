@@ -68,10 +68,12 @@ export class UsersComponent {
   public nomrules!: Object;
   public prenomrules!: Object;
   public emailrules!: Object;
+  public passwordrules!: Object;
   public rolerules!: Object;
   public pageSettings!: Object;
   public editparams!: Object;
   public dialogObj: any;
+  public show: boolean = false;
 
   public roleData: string[] = ['USER', 'TECHNICIEN', 'RESPONSABLE', 'ADMIN'];
   public roleSelectedItem!: any;
@@ -94,6 +96,7 @@ export class UsersComponent {
     this.nomrules = { required: true };
     this.prenomrules = { required: true };
     this.emailrules = { required: true };
+    this.passwordrules = { required: true };
     this.rolerules = { required: true };
     this.editparams = { params: { popupHeight: '300px' } };
     this.pageSettings = { pageCount: 5 };
@@ -103,6 +106,7 @@ export class UsersComponent {
     user.nom = args.data.nom;
     user.prenom = args.data.prenom;
     user.email = args.data.email;
+    user.password = args.data.password;
     user.isAccepted = args.data.isAccepted;
     user.isAvailable = args.data.isAvailable;
     user.role = this.roleSelectedItem;
@@ -118,14 +122,17 @@ export class UsersComponent {
         user = this.createUser(user, args);
         user.id = args.data.id;
         this.usersService.updateUser(user).subscribe((resultat) => {
+          this.show = false;
           this.ngOnInit();
+          this.grid.refreshColumns();
         });
       } else {
         let user: Users = new Users();
-        user.password = '123456';
         user = this.createUser(user, args);
         this.usersService.createUser(user).subscribe((resultat) => {
+          this.show = false;
           this.ngOnInit();
+          this.grid.refreshColumns();
         });
       }
     }
@@ -156,8 +163,37 @@ export class UsersComponent {
 
     if (args.requestType === 'cancel') {
       this.role.clear();
+      this.show = false;
+    }
+
+    if (args.requestType === 'add') {
+      for (var i = 0; i < this.grid.columns.length; i++) {
+        const column = this.grid.columns[i];
+        if (
+          column &&
+          typeof column !== 'string' &&
+          column.headerText === 'Password'
+        ) {
+          column.visible = true;
+        }
+      }
     }
   }
+
+  // actionComplete(args: any) {
+  //   if (args.requestType === 'save') {
+  //     for (var i = 0; i < this.grid.columns.length; i++) {
+  //       const column = this.grid.columns[i];
+  //       if (
+  //         column &&
+  //         typeof column !== 'string' &&
+  //         column.headerText === 'Password'
+  //       ) {
+  //         column.visible = false;
+  //       }
+  //     }
+  //   }
+  // }
 
   public deleteUser(id: any) {
     this.usersService.deleteUser(id).subscribe((res) => {

@@ -2,6 +2,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { Component, ViewChild } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { ToolbarModule, ItemModel } from '@syncfusion/ej2-angular-navigations';
 
 import {
   SidebarModule,
@@ -46,6 +47,7 @@ interface NodeData {
     ButtonModule,
     TreeViewAllModule,
     ListViewAllModule,
+    ToolbarModule,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
@@ -54,6 +56,9 @@ interface NodeData {
 export class AppComponent {
   title = 'my-project';
   showSidebar = false;
+  isLoggedIn = false;
+  userName = '';
+  userLink = '';
 
   @ViewChild('sidebarTreeviewInstance')
   public sidebarTreeviewInstance!: SidebarComponent;
@@ -75,26 +80,17 @@ export class AppComponent {
       if (userRole) {
         this.authService.isLoggedIn$.subscribe((isLoggedIn) => {
           this.showSidebar = isLoggedIn;
+          this.isLoggedIn = isLoggedIn;
           if (isLoggedIn) {
             this.getUserInformation(userRole);
+            this.token();
+            this.usersLink(userRole);
           }
         });
       }
     });
 
-    const token = this.authService.getToken();
-    if (token) {
-      // this.data = [];
-      this.authService
-        .getCurrentUserInformation(token)
-        .subscribe((userData) => {
-          this.showSidebar = true;
-          // this.data = [];
-          this.getUserInformation(userData.user.role);
-        });
-    } else {
-      console.log('Current user information:');
-    }
+    this.token();
   }
 
   public width: string = '290px';
@@ -110,6 +106,42 @@ export class AppComponent {
   };
 
   constructor(private router: Router, private authService: AuthService) {}
+
+  usersLink(userRole: string) {
+    switch (userRole) {
+      case 'ADMIN':
+        this.userLink = 'users';
+        break;
+      case 'USER':
+        this.userLink = 'user';
+        break;
+      case 'TECHNICIEN':
+        this.userLink = 'technicien';
+        break;
+      case 'RESPONSABLE':
+        this.userLink = 'responsable';
+        break;
+      default:
+        this.router.navigate(['/signin']);
+    }
+  }
+  token() {
+    const token = this.authService.getToken();
+    if (token) {
+      this.isLoggedIn = true;
+      this.authService
+        .getCurrentUserInformation(token)
+        .subscribe((userData) => {
+          this.showSidebar = true;
+          this.userName = userData.user.prenom;
+          this.getUserInformation(userData.user.role);
+          this.usersLink(userData.user.role);
+        });
+    } else {
+      console.log('Current user information:');
+      this.isLoggedIn = false;
+    }
+  }
 
   toolbarCliked(): void {
     this.sidebarTreeviewInstance.toggle();
@@ -192,20 +224,6 @@ export class AppComponent {
             nodeText: 'User',
             iconCss: 'icon-microchip icon',
             path: 'user',
-            nodeChild: [
-              {
-                nodeId: '01-01',
-                nodeText: 'Equipements',
-                iconCss: 'e-icons logout',
-                path: 'user-equipements',
-              },
-              {
-                nodeId: '01-02',
-                nodeText: 'Ordre de travail',
-                iconCss: 'e-icons logout',
-                path: 'ordre-de-travail',
-              },
-            ],
           },
           {
             nodeId: '02',
@@ -253,5 +271,9 @@ export class AppComponent {
       default:
         this.router.navigate(['/signin']);
     }
+  }
+
+  navigateTo(link: string) {
+    this.router.navigate([`/${link}`]);
   }
 }

@@ -65,7 +65,6 @@ import { AffectationDesOrdresService } from '../../services/affectation-des-ordr
   ],
 })
 export class ResponsableComponent {
-  @ViewChild('priorite') priorite!: DropDownListComponent;
   @ViewChild('status') status!: DropDownListComponent;
   @ViewChild('users') users!: DropDownListComponent;
   @ViewChild('Dialog') public Dialog!: DialogComponent;
@@ -81,9 +80,6 @@ export class ResponsableComponent {
   public descriptionrules!: Object;
   public pageSettings!: Object;
   public editparams!: Object;
-
-  public prioriteData: string[] = ['Faible', 'Moyenne', 'Haute'];
-  public prioriteSelectedItem!: any;
 
   public statusSelectedItem!: any;
   public technicienSelectedItem!: any;
@@ -156,7 +152,7 @@ export class ResponsableComponent {
         .getOrdreDeTravailById(args.data.id)
         .subscribe((ordresDeTravail: any) => {
           if (ordresDeTravail) {
-            ordresDeTravail.data.priorite = this.prioriteSelectedItem;
+            ordresDeTravail.data.urgent = args.data.urgent;
             ordresDeTravail.data.statut = 'En attente';
             this.ordresDeTravailService
               .updateOrdreDeTravail(ordresDeTravail.data)
@@ -199,7 +195,6 @@ export class ResponsableComponent {
         .getOrdreDeTravailById(args.rowData.id)
         .subscribe((response: any) => {
           this.peripheralForUpdate = response.data;
-          this.priorite.value = this.peripheralForUpdate.priorite;
         });
     }
 
@@ -213,10 +208,17 @@ export class ResponsableComponent {
         if (
           column &&
           typeof column !== 'string' &&
-          column.headerText !== 'Technicien' &&
-          column.headerText !== 'Priorité'
+          column.headerText !== 'Urgent?'
         ) {
           column.visible = false;
+        }
+
+        if (
+          column &&
+          typeof column !== 'string' &&
+          column.headerText === 'Technicien'
+        ) {
+          column.visible = true;
         }
       }
     }

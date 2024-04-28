@@ -69,7 +69,6 @@ import { Emplacements } from '../../models/emplacements';
 export class OrdreDeTravailComponent {
   @ViewChild('emplacement') emplacement!: DropDownListComponent;
   @ViewChild('equipement') equipement!: DropDownListComponent;
-  @ViewChild('priorite') priorite!: DropDownListComponent;
   @ViewChild('Dialog') public Dialog!: DialogComponent;
   @ViewChild('grid') grid!: GridComponent;
 
@@ -83,12 +82,9 @@ export class OrdreDeTravailComponent {
   public editparams!: Object;
 
   public titrerules!: Object;
-  public prioriterules!: Object;
   public descriptionrules!: Object;
   public statutrules!: Object;
 
-  public prioriteData: string[] = ['Faible', 'Moyenne', 'Haute'];
-  public prioriteSelectedItem!: any;
   public equipementsFields: Object = { text: 'nom', value: 'id' };
   public emplacementsFields: Object = { text: 'nom', value: 'id' };
   public equipementSelectedItem!: any;
@@ -124,43 +120,35 @@ export class OrdreDeTravailComponent {
             .getOrdresDeTravailByUserId(this.userIdReporter)
             .subscribe((response: any) => {
               this.ordresDeTravailData = response.data;
-              this.equipementsService
-                .getEquipements()
-                .subscribe((response: any) => {
-                  this.equipementsData = response.data;
-                  this.emplacementsService
-                    .getEmplacements()
-                    .subscribe((data: any) => {
-                      this.emplacementsData = data.emplacements;
-                    });
-                });
             });
         });
+
+      this.emplacementsService.getEmplacements().subscribe((res: any) => {
+        this.emplacementsData = res.emplacements;
+      });
     }
 
     this.editSettings = {
-      allowEditing: true,
-      allowAdding: false,
+      allowEditing: false,
+      allowAdding: true,
       allowDeleting: true,
       mode: 'Dialog',
     };
-    this.toolbar = ['Edit', 'Delete'];
+    this.toolbar = ['Add', 'Delete'];
     this.titrerules = { required: true };
-    this.prioriterules = { required: true };
     this.descriptionrules = { required: true };
     this.statutrules = { required: true };
     this.editparams = { params: { popupHeight: '300px' } };
     this.pageSettings = { pageCount: 5 };
   }
 
-  createPeripheral(ordresDeTravail: OrdresDeTravail, args: any) {
+  createOrdresDeTravail(ordresDeTravail: OrdresDeTravail, args: any) {
     ordresDeTravail.titre = args.data.titre;
     ordresDeTravail.description = args.data.description;
-    ordresDeTravail.statut = args.data.statut;
-
+    ordresDeTravail.statut = 'En panne';
     ordresDeTravail.utilisateur_id = `${this.userIdReporter}`;
-    ordresDeTravail.equipement_id = `${args.data.id}`;
-    this.priorite.clear();
+    ordresDeTravail.equipement_id = `${this.equipementSelectedItem}`;
+
     this.equipement.clear();
     this.emplacement.clear();
 
@@ -170,10 +158,10 @@ export class OrdreDeTravailComponent {
   actionBegin(args: any) {
     if (args.requestType === 'save') {
       let ordresDeTravail: OrdresDeTravail = new OrdresDeTravail();
-      ordresDeTravail = this.createPeripheral(ordresDeTravail, args);
-      ordresDeTravail.id = args.data.id;
+      ordresDeTravail = this.createOrdresDeTravail(ordresDeTravail, args);
+      // ordresDeTravail.id = args.data.id;
       this.ordresDeTravailService
-        .updateOrdreDeTravail(ordresDeTravail)
+        .createOrdreDeTravail(ordresDeTravail)
         .subscribe((resultat) => {
           this.ngOnInit();
         });
@@ -194,19 +182,7 @@ export class OrdreDeTravailComponent {
       });
     }
 
-    if (args.requestType === 'beginEdit') {
-      this.ordresDeTravailService
-        .getOrdreDeTravailById(args.rowData.id)
-        .subscribe((response: any) => {
-          this.peripheralForUpdate = response.data;
-          this.priorite.value = this.peripheralForUpdate.priorite;
-          this.equipement.value = this.peripheralForUpdate.equipement.id;
-          this.emplacement.value = this.peripheralForUpdate.emplacement.id;
-        });
-    }
-
     if (args.requestType === 'cancel') {
-      this.priorite.clear();
       this.equipement.clear();
       this.emplacement.clear();
     }
@@ -217,13 +193,10 @@ export class OrdreDeTravailComponent {
         if (
           (column &&
             typeof column !== 'string' &&
-            column.headerText === 'Nom Equipement') ||
+            column.headerText === 'Urgent?') ||
           (column &&
             typeof column !== 'string' &&
-            column.headerText === 'Emplacement') ||
-          (column &&
-            typeof column !== 'string' &&
-            column.headerText === 'Priorité')
+            column.headerText === 'Statut')
         ) {
           column.visible = false;
         }
@@ -254,5 +227,13 @@ export class OrdreDeTravailComponent {
   public onDialogClose() {
     this.showChild = false;
     this.Dialog.hide();
+  }
+
+  onEmplacementChange(event: any) {
+    this.equipementsService
+      .getEquipementsByEmpalcementId(event.itemData.id)
+      .subscribe((res: any) => {
+        this.equipementsData = res.data;
+      });
   }
 }
