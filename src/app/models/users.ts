@@ -7,4 +7,5 @@ export class Users {
   public role!: string;
   public isAvailable?: boolean;
   public isAccepted?: boolean;
+  public message?: string;
 }

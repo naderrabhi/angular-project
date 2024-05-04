@@ -33,6 +33,7 @@ import { Equipements } from '../../models/equipements';
 import { EquipementsService } from '../../services/equipements/equipements.service';
 import { EmplacementsService } from '../../services/emplacements/emplacements.service';
 import { Emplacements } from '../../models/emplacements';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-ordre-de-travail',
@@ -105,7 +106,8 @@ export class OrdreDeTravailComponent {
     private ordresDeTravailService: OrdresDeTravailService,
     private equipementsService: EquipementsService,
     private authService: AuthService,
-    private emplacementsService: EmplacementsService
+    private emplacementsService: EmplacementsService,
+    private toastr: ToastrService
   ) {}
 
   public ngOnInit(): void {
@@ -162,7 +164,8 @@ export class OrdreDeTravailComponent {
       // ordresDeTravail.id = args.data.id;
       this.ordresDeTravailService
         .createOrdreDeTravail(ordresDeTravail)
-        .subscribe((resultat) => {
+        .subscribe((res) => {
+          this.toastr.success(res.message);
           this.ngOnInit();
         });
     }
@@ -210,6 +213,7 @@ export class OrdreDeTravailComponent {
 
   public deleteOrdreDeTravail(id: any) {
     this.ordresDeTravailService.deleteOrdreDeTravail(id).subscribe((res) => {
+      this.toastr.success(res.message);
       this.dialogObj.hide();
       this.ordresDeTravailData = this.ordresDeTravailData.filter(
         (item) => item.id !== id
@@ -235,5 +239,24 @@ export class OrdreDeTravailComponent {
       .subscribe((res: any) => {
         this.equipementsData = res.data;
       });
+  }
+
+  getColorByUrgentAndStatut(urgent: any): string {
+    switch (urgent) {
+      case true:
+        return 'red';
+      case false:
+        return 'black';
+      case 'En panne':
+        return 'red';
+      case 'En attente':
+        return 'orange';
+      case 'En cours':
+        return 'gold';
+      case 'Réparé':
+        return 'green';
+      default:
+        return 'black';
+    }
   }
 }

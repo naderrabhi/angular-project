@@ -27,7 +27,8 @@
 
             <e-column headerText='Status' width='130' textAlign='Center'>
                 <ng-template #template let-data>
-                    <span>{{data.ordreTravail?.statut}}</span>
+                    <span style="color: white; padding: 5px 10px; border-radius: 5px;"
+                        [style.background-color]="getColorByUrgentAndStatut(data.ordreTravail?.statut)">{{data.ordreTravail?.statut}}</span>
                 </ng-template>
                 <ng-template #editTemplate let-data>
                     <ejs-textbox [value]="data.ordreTravail?.statut" placeholder="Status" #requeteCount></ejs-textbox>
@@ -36,8 +37,9 @@
 
             <e-column headerText='Urgent?' width='130' textAlign='Center'>
                 <ng-template #template let-data>
-                    <span
-                        [style.color]="getColorByUrgent(data.ordreTravail?.urgent)">{{data.ordreTravail?.urgent}}</span>
+                    <span style="color: white; padding: 5px 10px; border-radius: 5px;"
+                        [style.background-color]="getColorByUrgentAndStatut(data.ordreTravail?.urgent)">{{data.ordreTravail?.urgent
+                        ? 'Oui' : 'Non'}}</span>
                 </ng-template>
             </e-column>
 

@@ -10,7 +10,7 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "^17.2.0",
+    "@angular/animations": "^17.3.7",
     "@angular/common": "^17.2.0",
     "@angular/compiler": "^17.2.0",
     "@angular/core": "^17.2.0",
@@ -31,6 +31,7 @@
     "@syncfusion/ej2-angular-richtexteditor": "^24.2.9",
     "@syncfusion/ej2-icons": "^25.1.35",
     "bootstrap": "^5.3.3",
+    "ngx-toastr": "^18.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.3"

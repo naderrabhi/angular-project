@@ -6,4 +6,5 @@ export class AffectationDesOrdres {
   public date_confirmation!: string;
   public confirmer!: boolean;
   public reparer!: boolean;
+  public message?: string;
 }

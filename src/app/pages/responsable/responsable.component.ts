@@ -32,6 +32,7 @@ import { OrdresDeTravailService } from '../../services/ordres-de-travail/ordres-
 import { OrdresDeTravail } from '../../models/ordres-de-travail';
 import { AffectationDesOrdres } from '../../models/affectation-des-ordres';
 import { AffectationDesOrdresService } from '../../services/affectation-des-ordres/affectation-des-ordres.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-responsable',
@@ -98,7 +99,8 @@ export class ResponsableComponent {
   constructor(
     private usersService: UsersService,
     private ordresDeTravailService: OrdresDeTravailService,
-    private affectationDesOrdresService: AffectationDesOrdresService
+    private affectationDesOrdresService: AffectationDesOrdresService,
+    private toastr: ToastrService
   ) {}
 
   public ngOnInit(): void {
@@ -156,17 +158,20 @@ export class ResponsableComponent {
             ordresDeTravail.data.statut = 'En attente';
             this.ordresDeTravailService
               .updateOrdreDeTravail(ordresDeTravail.data)
-              .subscribe(() => {
+              .subscribe((res) => {
+                this.toastr.success(res.message);
                 this.affectationDesOrdresService
                   .createAffectationDeOrdre(affectationDesOrdres)
-                  .subscribe(() => {
+                  .subscribe((res) => {
+                    this.toastr.success(res.message);
                     let existedAssignedTechnicien = this.technicienData.filter(
                       (user) => user.id == this.technicienSelectedItem
                     )[0];
                     existedAssignedTechnicien.isAvailable = false;
                     this.usersService
                       .updateUser(existedAssignedTechnicien)
-                      .subscribe((data) => {
+                      .subscribe((res) => {
+                        this.toastr.success(res.message);
                         this.ngOnInit();
                       });
                   });
@@ -230,6 +235,7 @@ export class ResponsableComponent {
 
   public deleteOrdresDeTravail(id: any) {
     this.ordresDeTravailService.deleteOrdreDeTravail(id).subscribe((res) => {
+      this.toastr.success(res.message);
       this.dialogObj.hide();
       this.ordresDeTravailData = this.ordresDeTravailData.filter(
         (item) => item.id !== id
@@ -247,5 +253,24 @@ export class ResponsableComponent {
   public onDialogClose() {
     this.showChild = false;
     this.Dialog.hide();
+  }
+
+  getColorByUrgentAndStatut(urgent: any): string {
+    switch (urgent) {
+      case true:
+        return 'red';
+      case false:
+        return 'black';
+      case 'En panne':
+        return 'red';
+      case 'En attente':
+        return 'orange';
+      case 'En cours':
+        return 'gold';
+      case 'Réparé':
+        return 'green';
+      default:
+        return 'black';
+    }
   }
 }

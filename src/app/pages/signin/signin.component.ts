@@ -1,4 +1,4 @@
-import { Component, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { Component, ViewChild, ChangeDetectorRef, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth/auth.service';
 import { Router, RouterModule } from '@angular/router';
@@ -8,6 +8,7 @@ import {
   ToastComponent,
   ToastModule,
 } from '@syncfusion/ej2-angular-notifications';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-signin',
@@ -22,8 +23,13 @@ export class SigninComponent {
   password: string = '';
   errorMessage: string = '';
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private toastr: ToastrService
+  ) {}
 
+  // toaster = inject(ToastrService);
   ngOnInit() {
     this.executeReloadOnce();
   }
@@ -34,25 +40,6 @@ export class SigninComponent {
       localStorage.setItem('reloadExecuted', 'true');
       window.location.reload();
     }
-  }
-
-  showToast(message: string, type: string): void {
-    let cssClass = '';
-    switch (type) {
-      case 'error':
-        cssClass = 'error-toast';
-        break;
-      case 'success':
-        cssClass = 'success-toast';
-        break;
-      case 'warning':
-        cssClass = 'warning-toast';
-        break;
-      default:
-        cssClass = '';
-    }
-
-    this.toast.show({ content: message, cssClass: cssClass });
   }
 
   private userRoleSubject = new BehaviorSubject<string>('');
@@ -66,19 +53,27 @@ export class SigninComponent {
         (data) => {
           switch (data.user.role) {
             case 'ADMIN':
-              this.showToast(data.message, 'success');
+              this.toastr.success(
+                `Bienvenue ${data.user.nom} ${data.user.prenom}`
+              );
               this.router.navigate(['/users']);
               break;
             case 'USER':
-              this.showToast(data.message, 'success');
+              this.toastr.success(
+                `Bienvenue ${data.user.nom} ${data.user.prenom}`
+              );
               this.router.navigate(['/user']);
               break;
             case 'TECHNICIEN':
-              this.showToast(data.message, 'success');
+              this.toastr.success(
+                `Bienvenue ${data.user.nom} ${data.user.prenom}`
+              );
               this.router.navigate(['/technicien']);
               break;
             case 'RESPONSABLE':
-              this.showToast(data.message, 'success');
+              this.toastr.success(
+                `Bienvenue ${data.user.nom} ${data.user.prenom}`
+              );
               this.router.navigate(['/responsable']);
               break;
             default:
@@ -87,8 +82,7 @@ export class SigninComponent {
           this.errorMessage = '';
         },
         (error) => {
-          console.error('Login error:', error.error);
-          this.showToast(error.error.message, 'warning');
+          this.toastr.warning(error.error.message);
         }
       );
   }

@@ -29,16 +29,30 @@
                 </ng-template>
             </e-column>
 
-
-
             <e-column field='titre' headerText='Titre' width='250' textAlign='Left' isPrimaryKey='true'
                 [validationRules]='titrerules'></e-column>
             <e-column field='description' headerText='Description' width='300' format='C2' textAlign='Left'
                 [validationRules]='descriptionrules'></e-column>
-            <e-column field='statut' headerText='Statut' width='120' format='C2' isPrimaryKey='true' textAlign='Left'
-                [validationRules]='statutrules'></e-column>
 
-            <e-column field="urgent" headerText="Urgent?" editType="booleanedit" [defaultValue]='true'></e-column>
+            <!-- <e-column field='statut' headerText='Statut' width='120' format='C2' isPrimaryKey='true' textAlign='Left'
+                [validationRules]='statutrules'></e-column> -->
+
+            <e-column headerText='Statut' width='130' textAlign='Center'>
+                <ng-template #template let-data>
+                    <span style="color: white; padding: 5px 10px; border-radius: 5px;"
+                        [style.background-color]="getColorByUrgentAndStatut(data.statut)">{{data.statut}}</span>
+                </ng-template>
+            </e-column>
+
+            <!-- <e-column field="urgent" headerText="Urgent?" editType="booleanedit" [defaultValue]='true'></e-column> -->
+
+            <e-column headerText='Urgent?' width='130' textAlign='Center' editType="booleanedit">
+                <ng-template #template let-data>
+                    <span style="color: white; padding: 5px 10px; border-radius: 5px;"
+                        [style.background-color]="getColorByUrgentAndStatut(data.urgent)">{{data.urgent ? 'Oui' :
+                        'Non'}}</span>
+                </ng-template>
+            </e-column>
         </e-columns>
     </ejs-grid>
 </div>

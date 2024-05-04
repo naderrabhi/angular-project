@@ -28,6 +28,7 @@ import { AuthService } from '../../services/auth/auth.service';
 import { AffectationDesOrdresService } from '../../services/affectation-des-ordres/affectation-des-ordres.service';
 import { AffectationDesOrdres } from '../../models/affectation-des-ordres';
 import { OrdresDeTravailService } from '../../services/ordres-de-travail/ordres-de-travail.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-technicien',
@@ -90,7 +91,8 @@ export class TechnicienComponent {
     private usersService: UsersService,
     private authService: AuthService,
     private affectationDesOrdresService: AffectationDesOrdresService,
-    private ordresDeTravailService: OrdresDeTravailService
+    private ordresDeTravailService: OrdresDeTravailService,
+    private toastr: ToastrService
   ) {}
 
   public ngOnInit(): void {
@@ -169,7 +171,8 @@ export class TechnicienComponent {
 
       this.affectationDesOrdresService
         .updateAffectationDeOrdre(affectationDesOrdres)
-        .subscribe((resultat) => {
+        .subscribe((res) => {
+          this.toastr.success(res.message);
           this.ordresDeTravailService
             .getOrdreDeTravailById(args.data.ordre_travail_id)
             .subscribe(
@@ -184,10 +187,12 @@ export class TechnicienComponent {
                         this.usersService
                           .updateUser(res.message)
                           .subscribe((res) => {
+                            this.toastr.success(res.message);
                             this.ordresDeTravailService
                               .updateOrdreDeTravail(ordreDeTravail.data)
                               .subscribe(
-                                (updatedOrdreDeTravail) => {
+                                (res) => {
+                                  this.toastr.success(res.message);
                                   this.ngOnInit();
                                 },
                                 (error) => {
@@ -208,10 +213,12 @@ export class TechnicienComponent {
                         this.usersService
                           .updateUser(res.message)
                           .subscribe((res) => {
+                            this.toastr.success(res.message);
                             this.ordresDeTravailService
                               .updateOrdreDeTravail(ordreDeTravail.data)
                               .subscribe(
-                                (updatedOrdreDeTravail) => {
+                                (res) => {
+                                  this.toastr.success(res.message);
                                   this.ngOnInit();
                                 },
                                 (error) => {
@@ -228,11 +235,8 @@ export class TechnicienComponent {
                     this.ordresDeTravailService
                       .updateOrdreDeTravail(ordreDeTravail.data)
                       .subscribe(
-                        (updatedOrdreDeTravail) => {
-                          console.log(
-                            'Ordre de travail modifié avec succès:',
-                            updatedOrdreDeTravail
-                          );
+                        (res) => {
+                          this.toastr.success(res.message);
                           this.ngOnInit();
                         },
                         (error) => {
@@ -327,6 +331,7 @@ export class TechnicienComponent {
     this.affectationDesOrdresService
       .deleteAffectationDeOrdre(id)
       .subscribe((res) => {
+        this.toastr.success(res.message);
         this.dialogObj.hide();
         this.affectationDesOrdresData = this.affectationDesOrdresData.filter(
           (item) => item.id !== id
@@ -335,10 +340,20 @@ export class TechnicienComponent {
       });
   }
 
-  getColorByUrgent(urgent: boolean): string {
+  getColorByUrgentAndStatut(urgent: any): string {
     switch (urgent) {
       case true:
         return 'red';
+      case false:
+        return 'black';
+      case 'En panne':
+        return 'red';
+      case 'En attente':
+        return 'orange';
+      case 'En cours':
+        return 'gold';
+      case 'Réparé':
+        return 'green';
       default:
         return 'black';
     }

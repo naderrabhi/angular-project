@@ -4,9 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { CheckBoxModule } from '@syncfusion/ej2-angular-buttons';
 import { DatePickerAllModule } from '@syncfusion/ej2-angular-calendars';
-import {
-  DropDownListAllModule,
-} from '@syncfusion/ej2-angular-dropdowns';
+import { DropDownListAllModule } from '@syncfusion/ej2-angular-dropdowns';
 import {
   EditService,
   GridAllModule,
@@ -19,12 +17,10 @@ import {
   RatingAllModule,
 } from '@syncfusion/ej2-angular-inputs';
 import { ToolbarModule } from '@syncfusion/ej2-angular-navigations';
-import {
-  DialogModule,
-  DialogUtility,
-} from '@syncfusion/ej2-angular-popups';
+import { DialogModule, DialogUtility } from '@syncfusion/ej2-angular-popups';
 import { Emplacements } from '../../models/emplacements';
 import { EmplacementsService } from '../../services/emplacements/emplacements.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-emplacements',
@@ -71,7 +67,10 @@ export class EmplacementsComponent {
   public roleSelectedItem!: any;
   public userForUpdate!: any;
 
-  constructor(private emplacementsService: EmplacementsService) {}
+  constructor(
+    private emplacementsService: EmplacementsService,
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit() {
     this.emplacementsService.getEmplacements().subscribe((data: any) => {
@@ -106,7 +105,8 @@ export class EmplacementsComponent {
         emplacements.id = args.data.id;
         this.emplacementsService
           .updateEmplacement(emplacements)
-          .subscribe((resultat) => {
+          .subscribe((res) => {
+            this.toastr.success(res.message);
             this.ngOnInit();
           });
       } else {
@@ -114,7 +114,8 @@ export class EmplacementsComponent {
         emplacements = this.createEmplacement(emplacements, args);
         this.emplacementsService
           .createEmplacement(emplacements)
-          .subscribe((resultat) => {
+          .subscribe((res) => {
+            this.toastr.success(res.message);
             this.ngOnInit();
           });
       }
@@ -144,6 +145,7 @@ export class EmplacementsComponent {
 
   public deleteEmplacement(id: any) {
     this.emplacementsService.deleteEmplacement(id).subscribe((res) => {
+      this.toastr.success(res.message);
       this.dialogObj.hide();
       this.emplacementsData = this.emplacementsData.filter(
         (item) => item.id !== id

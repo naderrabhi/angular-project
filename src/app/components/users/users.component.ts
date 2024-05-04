@@ -27,6 +27,7 @@ import {
 } from '@syncfusion/ej2-angular-popups';
 import { UsersService } from '../../services/users/users.service';
 import { Users } from '../../models/users';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-users',
@@ -79,7 +80,10 @@ export class UsersComponent {
   public roleSelectedItem!: any;
   public userForUpdate!: any;
 
-  constructor(private usersService: UsersService) {}
+  constructor(
+    private usersService: UsersService,
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit() {
     this.usersService.getUsers().subscribe((data: any) => {
@@ -121,7 +125,8 @@ export class UsersComponent {
         let user: Users = new Users();
         user = this.createUser(user, args);
         user.id = args.data.id;
-        this.usersService.updateUser(user).subscribe((resultat) => {
+        this.usersService.updateUser(user).subscribe((res) => {
+          this.toastr.success(res.message);
           this.show = false;
           this.ngOnInit();
           this.grid.refreshColumns();
@@ -129,7 +134,8 @@ export class UsersComponent {
       } else {
         let user: Users = new Users();
         user = this.createUser(user, args);
-        this.usersService.createUser(user).subscribe((resultat) => {
+        this.usersService.createUser(user).subscribe((res) => {
+          this.toastr.success(res.message);
           this.show = false;
           this.ngOnInit();
           this.grid.refreshColumns();
@@ -197,6 +203,7 @@ export class UsersComponent {
 
   public deleteUser(id: any) {
     this.usersService.deleteUser(id).subscribe((res) => {
+      this.toastr.success(res.message);
       this.dialogObj.hide();
       this.usersData = this.usersData.filter((item) => item.id !== id);
       this.ngOnInit();

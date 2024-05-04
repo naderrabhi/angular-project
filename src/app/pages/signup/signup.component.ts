@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth/auth.service';
 import { Router, RouterModule } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-signup',
@@ -45,7 +46,11 @@ export class SignupComponent {
     }
   }
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit() {}
 
@@ -62,11 +67,17 @@ export class SignupComponent {
       })
       .subscribe(
         (data) => {
+          this.toastr.success(
+            `${this.nom} ${this.prenom} enregistré avec succès`
+          );
           this.router.navigate(['/signin']);
         },
         (error) => {
-          this.errorMessage = 'User already existed.';
-          console.error('Register error:', error);
+          for (const key in error.error.errors) {
+            if (error.error.errors.hasOwnProperty(key)) {
+              this.toastr.warning(error.error.errors[key]);
+            }
+          }
         }
       );
   }

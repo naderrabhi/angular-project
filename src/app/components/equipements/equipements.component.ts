@@ -26,6 +26,7 @@ import { Equipements } from '../../models/equipements';
 import { EquipementsService } from '../../services/equipements/equipements.service';
 import { Emplacements } from '../../models/emplacements';
 import { EmplacementsService } from '../../services/emplacements/emplacements.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-equipements',
@@ -78,7 +79,8 @@ export class EquipementsComponent {
 
   constructor(
     private equipementsService: EquipementsService,
-    private emplacementsService: EmplacementsService
+    private emplacementsService: EmplacementsService,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit() {
@@ -125,7 +127,8 @@ export class EquipementsComponent {
         equipements.id = args.data.id;
         this.equipementsService
           .updateEquipement(equipements)
-          .subscribe((resultat) => {
+          .subscribe((res) => {
+            this.toastr.success(res.message);
             this.ngOnInit();
           });
       } else {
@@ -133,7 +136,8 @@ export class EquipementsComponent {
         equipements = this.createEmplacement(equipements, args);
         this.equipementsService
           .createEquipement(equipements)
-          .subscribe((resultat) => {
+          .subscribe((res) => {
+            this.toastr.success(res.message);
             this.ngOnInit();
           });
       }
@@ -166,6 +170,7 @@ export class EquipementsComponent {
 
   public deleteEquipement(id: any) {
     this.equipementsService.deleteEquipement(id).subscribe((res) => {
+      this.toastr.success(res.message);
       this.dialogObj.hide();
       this.equipementsData = this.equipementsData.filter(
         (item) => item.id !== id

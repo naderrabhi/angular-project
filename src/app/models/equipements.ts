@@ -7,4 +7,5 @@ export class Equipements {
   public marque?: string;
   public coleur?: string;
   public emplacement_id?: string;
+  public message?: string;
 }

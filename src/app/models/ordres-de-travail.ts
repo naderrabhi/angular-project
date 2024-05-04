@@ -6,4 +6,5 @@ export class OrdresDeTravail {
   public statut?: string;
   public utilisateur_id?: string;
   public equipement_id?: string;
+  public message?: string;
 }
