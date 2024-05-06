@@ -28,6 +28,7 @@ import {
 import { UsersService } from '../../services/users/users.service';
 import { Users } from '../../models/users';
 import { ToastrService } from 'ngx-toastr';
+import { SpinnerComponent } from '../spinner/spinner.component';
 
 @Component({
   selector: 'app-users',
@@ -45,6 +46,7 @@ import { ToastrService } from 'ngx-toastr';
     DropDownListAllModule,
     ReactiveFormsModule,
     CheckBoxModule,
+    SpinnerComponent,
   ],
   templateUrl: './users.component.html',
   styleUrl: './users.component.css',
@@ -79,6 +81,8 @@ export class UsersComponent {
   public roleData: string[] = ['USER', 'TECHNICIEN', 'RESPONSABLE', 'ADMIN'];
   public roleSelectedItem!: any;
   public userForUpdate!: any;
+  loading: boolean = true;
+  showSpinner: boolean = true;
 
   constructor(
     private usersService: UsersService,
@@ -86,9 +90,18 @@ export class UsersComponent {
   ) {}
 
   ngOnInit() {
-    this.usersService.getUsers().subscribe((data: any) => {
-      this.usersData = data.user;
-    });
+    this.usersService.getUsers().subscribe(
+      (data: any) => {
+        this.usersData = data.user;
+        this.loading = false;
+        this.showSpinner = false;
+      },
+      (error) => {
+        console.error('Error fetching users:', error);
+        this.loading = false;
+        this.showSpinner = false;
+      }
+    );
 
     this.editSettings = {
       allowEditing: true,
@@ -125,21 +138,37 @@ export class UsersComponent {
         let user: Users = new Users();
         user = this.createUser(user, args);
         user.id = args.data.id;
-        this.usersService.updateUser(user).subscribe((res) => {
-          this.toastr.success(res.message);
-          this.show = false;
-          this.ngOnInit();
-          this.grid.refreshColumns();
-        });
+        this.usersService.updateUser(user).subscribe(
+          (res) => {
+            this.toastr.success(res.message);
+            this.show = false;
+            this.ngOnInit();
+            this.grid.refreshColumns();
+          },
+          (err) => {
+            this.toastr.error(err.message);
+          }
+        );
       } else {
         let user: Users = new Users();
         user = this.createUser(user, args);
-        this.usersService.createUser(user).subscribe((res) => {
-          this.toastr.success(res.message);
-          this.show = false;
-          this.ngOnInit();
-          this.grid.refreshColumns();
-        });
+        this.usersService.createUser(user).subscribe(
+          (res) => {
+            this.toastr.success(res.message);
+            this.show = false;
+            this.ngOnInit();
+            this.grid.refreshColumns();
+          },
+          (err) => {
+            for (const key in err.error.errors) {
+              if (err.error.errors.hasOwnProperty(key)) {
+                this.toastr.error(err.error.errors[key]);
+              }
+              this.showSpinner = true;
+              this.ngOnInit();
+            }
+          }
+        );
       }
     }
 
@@ -186,20 +215,7 @@ export class UsersComponent {
     }
   }
 
-  // actionComplete(args: any) {
-  //   if (args.requestType === 'save') {
-  //     for (var i = 0; i < this.grid.columns.length; i++) {
-  //       const column = this.grid.columns[i];
-  //       if (
-  //         column &&
-  //         typeof column !== 'string' &&
-  //         column.headerText === 'Password'
-  //       ) {
-  //         column.visible = false;
-  //       }
-  //     }
-  //   }
-  // }
+  actionComplete(args: any) {}
 
   public deleteUser(id: any) {
     this.usersService.deleteUser(id).subscribe((res) => {

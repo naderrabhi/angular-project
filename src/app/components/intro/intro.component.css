@@ -4,7 +4,7 @@
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    background-image: url("../../../assets/images/header.jpg"); /* Replace with your background image path */
+    background-image: url("../../../assets/images/header.jpg");
     background-size: cover;
     background-position: center;
     color: #fff;
@@ -16,7 +16,6 @@
     margin-bottom: 20px;
   }
 
-  
   .intro-description {
     font-size: 1.2em;
     line-height: 1.5;

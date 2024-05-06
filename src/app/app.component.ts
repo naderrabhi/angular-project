@@ -2,7 +2,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { Component, ViewChild } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { ToolbarModule, ItemModel } from '@syncfusion/ej2-angular-navigations';
+import { ToolbarModule } from '@syncfusion/ej2-angular-navigations';
 
 import {
   SidebarModule,

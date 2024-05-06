@@ -27,6 +27,7 @@ import { EquipementsService } from '../../services/equipements/equipements.servi
 import { Emplacements } from '../../models/emplacements';
 import { EmplacementsService } from '../../services/emplacements/emplacements.service';
 import { ToastrService } from 'ngx-toastr';
+import { SpinnerComponent } from '../spinner/spinner.component';
 
 @Component({
   selector: 'app-equipements',
@@ -45,6 +46,7 @@ import { ToastrService } from 'ngx-toastr';
     DropDownListAllModule,
     ReactiveFormsModule,
     CheckBoxModule,
+    SpinnerComponent,
   ],
   templateUrl: './equipements.component.html',
   styleUrl: './equipements.component.css',
@@ -76,6 +78,8 @@ export class EquipementsComponent {
   public pageSettings!: Object;
   public editparams!: Object;
   public dialogObj: any;
+  loading: boolean = true;
+  showSpinner: boolean = true;
 
   constructor(
     private equipementsService: EquipementsService,
@@ -84,9 +88,18 @@ export class EquipementsComponent {
   ) {}
 
   ngOnInit() {
-    this.equipementsService.getEquipements().subscribe((data: any) => {
-      this.equipementsData = data.data;
-    });
+    this.equipementsService.getEquipements().subscribe(
+      (data: any) => {
+        this.equipementsData = data.data;
+        this.loading = false;
+        this.showSpinner = false;
+      },
+      (error) => {
+        console.error('Error fetching equipements:', error);
+        this.loading = false;
+        this.showSpinner = false;
+      }
+    );
 
     this.emplacementsService.getEmplacements().subscribe((data: any) => {
       this.emplacementsData = data.emplacements;
@@ -134,12 +147,19 @@ export class EquipementsComponent {
       } else {
         let equipements: Equipements = new Equipements();
         equipements = this.createEmplacement(equipements, args);
-        this.equipementsService
-          .createEquipement(equipements)
-          .subscribe((res) => {
+        this.equipementsService.createEquipement(equipements).subscribe(
+          (res) => {
             this.toastr.success(res.message);
             this.ngOnInit();
-          });
+          },
+          (err) => {
+            this.toastr.error(
+              `la création a échoué, la num série doit être unique`
+            );
+            this.showSpinner = true;
+            this.ngOnInit();
+          }
+        );
       }
     }
 

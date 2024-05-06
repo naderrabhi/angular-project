@@ -21,6 +21,7 @@ import { DialogModule, DialogUtility } from '@syncfusion/ej2-angular-popups';
 import { Emplacements } from '../../models/emplacements';
 import { EmplacementsService } from '../../services/emplacements/emplacements.service';
 import { ToastrService } from 'ngx-toastr';
+import { SpinnerComponent } from '../spinner/spinner.component';
 
 @Component({
   selector: 'app-emplacements',
@@ -38,6 +39,7 @@ import { ToastrService } from 'ngx-toastr';
     DropDownListAllModule,
     ReactiveFormsModule,
     CheckBoxModule,
+    SpinnerComponent,
   ],
   templateUrl: './emplacements.component.html',
   styleUrl: './emplacements.component.css',
@@ -66,6 +68,8 @@ export class EmplacementsComponent {
   public roleData: string[] = ['USER', 'TECHNICIEN', 'RESPONSABLE', 'ADMIN'];
   public roleSelectedItem!: any;
   public userForUpdate!: any;
+  loading: boolean = true;
+  showSpinner: boolean = true;
 
   constructor(
     private emplacementsService: EmplacementsService,
@@ -73,9 +77,18 @@ export class EmplacementsComponent {
   ) {}
 
   ngOnInit() {
-    this.emplacementsService.getEmplacements().subscribe((data: any) => {
-      this.emplacementsData = data.emplacements;
-    });
+    this.emplacementsService.getEmplacements().subscribe(
+      (data: any) => {
+        this.emplacementsData = data.emplacements;
+        this.loading = false;
+        this.showSpinner = false;
+      },
+      (error) => {
+        console.error('Error fetching emplacements:', error);
+        this.loading = false;
+        this.showSpinner = false;
+      }
+    );
 
     this.editSettings = {
       allowEditing: true,

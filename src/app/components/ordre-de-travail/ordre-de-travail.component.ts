@@ -34,6 +34,7 @@ import { EquipementsService } from '../../services/equipements/equipements.servi
 import { EmplacementsService } from '../../services/emplacements/emplacements.service';
 import { Emplacements } from '../../models/emplacements';
 import { ToastrService } from 'ngx-toastr';
+import { SpinnerComponent } from '../spinner/spinner.component';
 
 @Component({
   selector: 'app-ordre-de-travail',
@@ -51,6 +52,7 @@ import { ToastrService } from 'ngx-toastr';
     DropDownListAllModule,
     ReactiveFormsModule,
     CheckBoxModule,
+    SpinnerComponent,
   ],
   templateUrl: './ordre-de-travail.component.html',
   styleUrl: './ordre-de-travail.component.css',
@@ -101,6 +103,8 @@ export class OrdreDeTravailComponent {
   public target: string = '.control-section';
   public Dialogwidth: string = '700px';
   public userIdReporter!: number;
+  loading: boolean = true;
+  showSpinner: boolean = true;
 
   constructor(
     private ordresDeTravailService: OrdresDeTravailService,
@@ -113,16 +117,24 @@ export class OrdreDeTravailComponent {
   public ngOnInit(): void {
     const token = this.authService.getToken();
     if (token) {
-      // Optionally fetch user information if applicable
       this.authService
         .getCurrentUserInformation(token)
         .subscribe((userData) => {
           this.userIdReporter = userData.user.id;
           this.ordresDeTravailService
             .getOrdresDeTravailByUserId(this.userIdReporter)
-            .subscribe((response: any) => {
-              this.ordresDeTravailData = response.data;
-            });
+            .subscribe(
+              (data: any) => {
+                this.ordresDeTravailData = data.data;
+                this.loading = false;
+                this.showSpinner = false;
+              },
+              (error) => {
+                console.error('Error fetching les ordres de travail:', error);
+                this.loading = false;
+                this.showSpinner = false;
+              }
+            );
         });
 
       this.emplacementsService.getEmplacements().subscribe((res: any) => {
@@ -161,13 +173,24 @@ export class OrdreDeTravailComponent {
     if (args.requestType === 'save') {
       let ordresDeTravail: OrdresDeTravail = new OrdresDeTravail();
       ordresDeTravail = this.createOrdresDeTravail(ordresDeTravail, args);
-      // ordresDeTravail.id = args.data.id;
       this.ordresDeTravailService
         .createOrdreDeTravail(ordresDeTravail)
-        .subscribe((res) => {
-          this.toastr.success(res.message);
-          this.ngOnInit();
-        });
+        .subscribe(
+          (res) => {
+            this.toastr.success(res.message);
+            this.showSpinner = true;
+            this.ngOnInit();
+          },
+          (err) => {
+            for (const key in err.error.errors) {
+              if (err.error.errors.hasOwnProperty(key)) {
+                this.toastr.error(err.error.errors[key]);
+              }
+              this.showSpinner = true;
+              this.ngOnInit();
+            }
+          }
+        );
     }
 
     if (args.requestType === 'delete') {

@@ -1,4 +1,5 @@
-<div class="control-section">
+<app-spinner *ngIf="showSpinner"></app-spinner>
+<div class="control-section" *ngIf="!showSpinner">
     <ejs-grid #grid [dataSource]='equipementsData' allowPaging='true' [pageSettings]='pageSettings'
         (actionBegin)="actionBegin($event)" [pageSettings]='pageSettings' [editSettings]='editSettings'
         [toolbar]='toolbar'>

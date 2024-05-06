@@ -1,4 +1,5 @@
-<div class="control-section">
+<app-spinner *ngIf="showSpinner"></app-spinner>
+<div class="control-section" *ngIf="!showSpinner">
     <ejs-grid #grid [dataSource]='ordresDeTravailData' allowPaging='true' [pageSettings]='pageSettings'
         (actionBegin)="actionBegin($event)" [pageSettings]='pageSettings' [editSettings]='editSettings'
         [toolbar]='toolbar'>
@@ -9,27 +10,22 @@
                 [validationRules]='namerules'></e-column>
             <e-column field='description' headerText='Description' width='120' format='C2' textAlign='Right'
                 [validationRules]='descriptionrules'></e-column>
-            <!-- <e-column field='statut' headerText='Statut' width='120' [validationRules]='typerules'></e-column> -->
-
             <e-column headerText='Statut' width='130' textAlign='Center'>
                 <ng-template #template let-data>
                     <span style="color: white; padding: 5px 10px; border-radius: 5px;"
                         [style.background-color]="getColorByUrgentAndStatut(data.statut)">{{data.statut}}</span>
                 </ng-template>
             </e-column>
-
             <e-column headerText='Equipement' width='150' textAlign='Center'>
                 <ng-template #template let-data>
                     <span>{{data.equipement?.nom}}</span>
                 </ng-template>
             </e-column>
-
             <e-column headerText='Empalcement' width='150' textAlign='Center'>
                 <ng-template #template let-data>
                     <span>{{data.emplacement?.nom}}</span>
                 </ng-template>
             </e-column>
-
             <e-column headerText='Technicien' [visible]="false" width='130' textAlign='Center'>
                 <ng-template #template let-data>
                     <span>{{data.user?.prenom}}</span>
@@ -40,9 +36,6 @@
                         floatLabelType='Always'></ejs-dropdownlist>
                 </ng-template>
             </e-column>
-
-            <!-- <e-column field="urgent" headerText="Urgent?" editType="booleanedit" [defaultValue]='true'></e-column> -->
-
             <e-column field="urgent" headerText='Urgent?' width='130' textAlign='Center' editType="booleanedit">
                 <ng-template #template let-data>
                     <span style="color: white; padding: 5px 10px; border-radius: 5px;"
@@ -50,10 +43,6 @@
                         'Non'}}</span>
                 </ng-template>
             </e-column>
-
-
         </e-columns>
-
     </ejs-grid>
-
 </div>

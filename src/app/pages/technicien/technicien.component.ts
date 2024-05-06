@@ -29,6 +29,7 @@ import { AffectationDesOrdresService } from '../../services/affectation-des-ordr
 import { AffectationDesOrdres } from '../../models/affectation-des-ordres';
 import { OrdresDeTravailService } from '../../services/ordres-de-travail/ordres-de-travail.service';
 import { ToastrService } from 'ngx-toastr';
+import { SpinnerComponent } from '../../components/spinner/spinner.component';
 
 @Component({
   selector: 'app-technicien',
@@ -47,6 +48,7 @@ import { ToastrService } from 'ngx-toastr';
     ReactiveFormsModule,
     CheckBoxModule,
     TextBoxModule,
+    SpinnerComponent,
   ],
   templateUrl: './technicien.component.html',
   styleUrl: './technicien.component.css',
@@ -86,6 +88,8 @@ export class TechnicienComponent {
   public target: string = '.control-section';
   public Dialogwidth: string = '700px';
   private technicianId!: number;
+  loading: boolean = true;
+  showSpinner: boolean = true;
 
   constructor(
     private usersService: UsersService,
@@ -98,16 +102,33 @@ export class TechnicienComponent {
   public ngOnInit(): void {
     const token = this.authService.getToken();
     if (token) {
-      this.authService
-        .getCurrentUserInformation(token)
-        .subscribe((userData) => {
+      this.authService.getCurrentUserInformation(token).subscribe(
+        (userData) => {
           this.technicianId = userData.user.id;
           this.affectationDesOrdresService
             .getAffectationDesOrdresByTechnicianId(this.technicianId)
-            .subscribe((data: any) => {
-              this.affectationDesOrdresData = data;
-            });
-        });
+            .subscribe(
+              (data: any) => {
+                this.affectationDesOrdresData = data;
+                this.loading = false;
+                this.showSpinner = false;
+              },
+              (error) => {
+                console.error(
+                  'Error fetching les affectation des ordres:',
+                  error
+                );
+                this.loading = false;
+                this.showSpinner = false;
+              }
+            );
+        },
+        (error) => {
+          console.error('Error fetching token:', error);
+          this.loading = false;
+          this.showSpinner = false;
+        }
+      );
     }
 
     this.editSettings = {
@@ -133,24 +154,24 @@ export class TechnicienComponent {
 
     let formattedDate = this.getFormattedDate();
 
-    if (affectationDesOrdres.confirmer && !affectationDesOrdres.reparer) {
+    if (!affectationDesOrdres.confirmer && !affectationDesOrdres.reparer) {
+      affectationDesOrdres.date_confirmation = 'null';
+      affectationDesOrdres.date_resolution = 'null';
+    } else if (
+      affectationDesOrdres.confirmer &&
+      !affectationDesOrdres.reparer
+    ) {
       affectationDesOrdres.date_confirmation = formattedDate;
       affectationDesOrdres.date_resolution = 'null';
     } else if (
       !affectationDesOrdres.confirmer &&
-      affectationDesOrdres.reparer
+      affectationDesOrdres.reparer &&
+      !affectationDesOrdres.confirmer
     ) {
       affectationDesOrdres.date_resolution = formattedDate;
       affectationDesOrdres.confirmer = true;
       affectationDesOrdres.date_confirmation = formattedDate;
-    } else if (
-      !affectationDesOrdres.confirmer &&
-      !affectationDesOrdres.reparer
-    ) {
-      affectationDesOrdres.date_confirmation = 'null';
-      affectationDesOrdres.date_resolution = 'null';
-    } else {
-      // affectationDesOrdres.date_confirmation = formattedDate;
+    } else if (affectationDesOrdres.confirmer && affectationDesOrdres.reparer) {
       affectationDesOrdres.date_resolution = formattedDate;
     }
 
@@ -316,7 +337,6 @@ export class TechnicienComponent {
     const hours = String(now.getHours()).padStart(2, '0');
     const minutes = String(now.getMinutes()).padStart(2, '0');
     const seconds = String(now.getSeconds()).padStart(2, '0');
-    const milliseconds = String(now.getMilliseconds()).padStart(6, '0');
 
     const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 

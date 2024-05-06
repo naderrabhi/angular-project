@@ -1,22 +1,13 @@
 .home-container {
-    min-height: 100vh; /* Ensure Home component fills viewport height */
-    display: flex; /* Allow stacking Intro and content container vertically */
-    flex-direction: column; /* Stack elements on top of each other */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
   }
   
   .content-container {
-    flex: 1; /* Allow content container to expand to fill remaining space */
-    padding: 50px; /* Add some padding for visual separation */
+    flex: 1;
+    padding: 50px;
   }
-  
-  /* Optional: Adjust Intro and About component styles */
-  /* Consider using styles from intro.component.css and about.component.css */
-  
-  .footer {
-    /* Styles for the footer component (replace with your footer.component.css) */
-  }
-
-
   .content-container[_ngcontent-ng-c1546899537] {
     flex: 1;
     padding: 0px;

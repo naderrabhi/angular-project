@@ -33,6 +33,7 @@ import { OrdresDeTravail } from '../../models/ordres-de-travail';
 import { AffectationDesOrdres } from '../../models/affectation-des-ordres';
 import { AffectationDesOrdresService } from '../../services/affectation-des-ordres/affectation-des-ordres.service';
 import { ToastrService } from 'ngx-toastr';
+import { SpinnerComponent } from '../../components/spinner/spinner.component';
 
 @Component({
   selector: 'app-responsable',
@@ -50,6 +51,7 @@ import { ToastrService } from 'ngx-toastr';
     DropDownListAllModule,
     ReactiveFormsModule,
     CheckBoxModule,
+    SpinnerComponent,
   ],
   templateUrl: './responsable.component.html',
   styleUrl: './responsable.component.css',
@@ -93,6 +95,8 @@ export class ResponsableComponent {
   public target: string = '.control-section';
   public Dialogwidth: string = '700px';
   public showUsersColumn: boolean = false;
+  loading: boolean = true;
+  showSpinner: boolean = true;
 
   public technicienFields: Object = { text: 'nom', value: 'id' };
 
@@ -110,11 +114,18 @@ export class ResponsableComponent {
       );
     });
 
-    this.ordresDeTravailService
-      .getOrdresDeTravail()
-      .subscribe((response: any) => {
-        this.ordresDeTravailData = response.data;
-      });
+    this.ordresDeTravailService.getOrdresDeTravail().subscribe(
+      (data: any) => {
+        this.ordresDeTravailData = data.data;
+        this.loading = false;
+        this.showSpinner = false;
+      },
+      (error) => {
+        console.error('Error fetching les ordres de Travail:', error);
+        this.loading = false;
+        this.showSpinner = false;
+      }
+    );
 
     this.editSettings = {
       allowEditing: true,
@@ -150,34 +161,33 @@ export class ResponsableComponent {
         args
       );
 
-      this.ordresDeTravailService
-        .getOrdreDeTravailById(args.data.id)
-        .subscribe((ordresDeTravail: any) => {
-          if (ordresDeTravail) {
-            ordresDeTravail.data.urgent = args.data.urgent;
-            ordresDeTravail.data.statut = 'En attente';
-            this.ordresDeTravailService
-              .updateOrdreDeTravail(ordresDeTravail.data)
-              .subscribe((res) => {
-                this.toastr.success(res.message);
-                this.affectationDesOrdresService
-                  .createAffectationDeOrdre(affectationDesOrdres)
-                  .subscribe((res) => {
-                    this.toastr.success(res.message);
-                    let existedAssignedTechnicien = this.technicienData.filter(
-                      (user) => user.id == this.technicienSelectedItem
-                    )[0];
-                    existedAssignedTechnicien.isAvailable = false;
-                    this.usersService
-                      .updateUser(existedAssignedTechnicien)
-                      .subscribe((res) => {
-                        this.toastr.success(res.message);
-                        this.ngOnInit();
-                      });
-                  });
-              });
-          }
-        });
+      this.ordresDeTravailService.getOrdreDeTravailById(args.data.id).subscribe(
+        (ordresDeTravail: any) => {
+          ordresDeTravail.data.urgent = args.data.urgent;
+          ordresDeTravail.data.statut = 'En attente';
+          this.ordresDeTravailService
+            .updateOrdreDeTravail(ordresDeTravail.data)
+            .subscribe((res) => {
+              this.toastr.success(res.message);
+              this.affectationDesOrdresService
+                .createAffectationDeOrdre(affectationDesOrdres)
+                .subscribe((res) => {
+                  this.toastr.success(res.message);
+                  let existedAssignedTechnicien = this.technicienData.filter(
+                    (user) => user.id == this.technicienSelectedItem
+                  )[0];
+                  existedAssignedTechnicien.isAvailable = false;
+                  this.usersService
+                    .updateUser(existedAssignedTechnicien)
+                    .subscribe((res) => {
+                      this.toastr.success(res.message);
+                      this.ngOnInit();
+                    });
+                });
+            });
+        },
+        (error) => {}
+      );
     }
 
     if (args.requestType === 'delete') {

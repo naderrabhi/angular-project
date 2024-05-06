@@ -1,8 +1,8 @@
-    .about-container {
-    display: flex; /* Use flexbox for layout */
+  .about-container {
+    display: flex;
     justify-content: space-evenly;
     align-items: center;
-    flex-wrap: wrap; /* Allow content to wrap if necessary on smaller screens */
+    flex-wrap: wrap;
     padding: 50px;
     height: 100vh;
     background-color: #9ACD32;
@@ -11,14 +11,14 @@
   }
   
   .about-image {
-    width: 400px; /* Set image width to occupy half the container */
-    object-fit: cover; /* Ensure image fills its space */
-    margin-right: 20px; /* Add space between image and text */
+    width: 400px;
+    object-fit: cover;
+    margin-right: 20px;
 
   }
   
   .about-text {
-    width: 50%; /* Set text area to occupy half the container */
+    width: 50%;
   }
   
   .about-title {
@@ -57,14 +57,13 @@
     background-color: #444;
   }
   
-  /* Optional media queries for responsive adjustments (e.g., adjust image width on smaller screens) */
   @media (max-width: 768px) {
     .about-image {
-      width: 100%; /* Make image full width on smaller screens */
+      width: 100%;
       margin-right: 0;
     }
   
     .about-text {
-      width: 100%; /* Make text area full width on smaller screens */
+      width: 100%;
     }
   }

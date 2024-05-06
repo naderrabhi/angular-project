@@ -2,7 +2,7 @@
     padding: 50px;
     text-align: center;
     height: 100vh;
-    background-image: url("../../../assets/images/contact.jpg"); /* Replace with your background image path */
+    background-image: url("../../../assets/images/contact.jpg");
     background-size: cover;
     background-position: center;
     color: black;
@@ -28,7 +28,7 @@
   .contact-info {
     display: flex;
     flex-direction: column;
-    gap: 10px; /* Add spacing between phone and email elements */
+    gap: 10px;
   }
   
   .contact-phone,

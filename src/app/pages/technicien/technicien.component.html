@@ -1,11 +1,11 @@
-<div class="control-section">
+<app-spinner *ngIf="showSpinner"></app-spinner>
+<div class="control-section" *ngIf="!showSpinner">
     <ejs-grid #grid [dataSource]='affectationDesOrdresData' allowPaging='true' [pageSettings]='pageSettings'
         (actionBegin)="actionBegin($event)" [pageSettings]='pageSettings' [editSettings]='editSettings'
         [toolbar]='toolbar'>
         <e-columns>
             <e-column field='id' [visible]='false' headerText='ID' width='120' [allowEditing]="false" textAlign='Left'
                 isPrimaryKey='true'></e-column>
-
             <e-column headerText='Titre' width='130' textAlign='Center'>
                 <ng-template #template let-data>
                     <span>{{data.ordreTravail?.titre}}</span>
@@ -14,7 +14,6 @@
                     <ejs-textbox [value]="data.ordreTravail?.titre" placeholder="Titre" #requeteCount></ejs-textbox>
                 </ng-template>
             </e-column>
-
             <e-column headerText='Description' width='230' textAlign='Center'>
                 <ng-template #template let-data>
                     <span>{{data.ordreTravail?.description}}</span>
@@ -24,7 +23,6 @@
                         #requeteCount></ejs-textbox>
                 </ng-template>
             </e-column>
-
             <e-column headerText='Status' width='130' textAlign='Center'>
                 <ng-template #template let-data>
                     <span style="color: white; padding: 5px 10px; border-radius: 5px;"
@@ -34,7 +32,6 @@
                     <ejs-textbox [value]="data.ordreTravail?.statut" placeholder="Status" #requeteCount></ejs-textbox>
                 </ng-template>
             </e-column>
-
             <e-column headerText='Urgent?' width='130' textAlign='Center'>
                 <ng-template #template let-data>
                     <span style="color: white; padding: 5px 10px; border-radius: 5px;"
@@ -42,7 +39,6 @@
                         ? 'Oui' : 'Non'}}</span>
                 </ng-template>
             </e-column>
-
             <e-column headerText='Created At' width='175' textAlign='Center'>
                 <ng-template #template let-data>
                     <span>{{data.created_at}}</span>
@@ -51,7 +47,6 @@
                     <ejs-textbox [value]="data.created_at" placeholder="Created At" #requeteCount></ejs-textbox>
                 </ng-template>
             </e-column>
-
             <e-column field="confirmer" width="130" headerText="Confirmed?" editType="booleanedit"
                 [defaultValue]='true'></e-column>
 
@@ -64,10 +59,8 @@
                         #requeteCount></ejs-textbox>
                 </ng-template>
             </e-column>
-
             <e-column field="reparer" width="130" headerText="Fixed?" editType="booleanedit"
                 [defaultValue]='true'></e-column>
-
             <e-column headerText='Fixed At' width='180' textAlign='Center'>
                 <ng-template #template let-data>
                     <span>{{data.date_resolution}}</span>
@@ -76,8 +69,6 @@
                     <ejs-textbox [value]="data.date_resolution" placeholder="Fixed At" #requeteCount></ejs-textbox>
                 </ng-template>
             </e-column>
-
         </e-columns>
-
     </ejs-grid>
 </div>

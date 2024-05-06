@@ -29,7 +29,6 @@ export class SigninComponent {
     private toastr: ToastrService
   ) {}
 
-  // toaster = inject(ToastrService);
   ngOnInit() {
     this.executeReloadOnce();
   }
