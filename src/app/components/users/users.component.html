@@ -23,7 +23,7 @@
                         [(value)]="roleSelectedItem" popupHeight='300px' floatLabelType='Always'></ejs-dropdownlist>
                 </ng-template>
             </e-column>
-            <e-column field="isAvailable" headerText="isAvailable?" editType="booleanedit"
+            <e-column field="isAvailable" [visible]="false" headerText="isAvailable?" editType="booleanedit"
                 [defaultValue]='true'></e-column>
             <e-column field="isAccepted" headerText="isAccepted?" editType="booleanedit"
                 [defaultValue]='true'></e-column>

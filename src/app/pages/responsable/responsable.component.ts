@@ -161,33 +161,41 @@ export class ResponsableComponent {
         args
       );
 
-      this.ordresDeTravailService.getOrdreDeTravailById(args.data.id).subscribe(
-        (ordresDeTravail: any) => {
-          ordresDeTravail.data.urgent = args.data.urgent;
-          ordresDeTravail.data.statut = 'En attente';
-          this.ordresDeTravailService
-            .updateOrdreDeTravail(ordresDeTravail.data)
-            .subscribe((res) => {
-              this.toastr.success(res.message);
-              this.affectationDesOrdresService
-                .createAffectationDeOrdre(affectationDesOrdres)
-                .subscribe((res) => {
-                  this.toastr.success(res.message);
-                  let existedAssignedTechnicien = this.technicienData.filter(
-                    (user) => user.id == this.technicienSelectedItem
-                  )[0];
-                  existedAssignedTechnicien.isAvailable = false;
-                  this.usersService
-                    .updateUser(existedAssignedTechnicien)
-                    .subscribe((res) => {
-                      this.toastr.success(res.message);
-                      this.ngOnInit();
-                    });
-                });
-            });
-        },
-        (error) => {}
-      );
+      this.affectationDesOrdresService
+        .createAffectationDeOrdre(affectationDesOrdres)
+        .subscribe(
+          (res) => {
+            this.toastr.success(res.message);
+            let existedAssignedTechnicien = this.technicienData.filter(
+              (user) => user.id == this.technicienSelectedItem
+            )[0];
+            existedAssignedTechnicien.isAvailable = false;
+            this.usersService
+              .updateUser(existedAssignedTechnicien)
+              .subscribe((res) => {
+                this.toastr.success(res.message);
+                this.ordresDeTravailService
+                  .getOrdreDeTravailById(args.data.id)
+                  .subscribe(
+                    (ordresDeTravail: any) => {
+                      ordresDeTravail.data.urgent = args.data.urgent;
+                      ordresDeTravail.data.statut = 'En attente';
+                      this.ordresDeTravailService
+                        .updateOrdreDeTravail(ordresDeTravail.data)
+                        .subscribe((res) => {
+                          this.toastr.success(res.message);
+                        });
+                    },
+                    (error) => {}
+                  );
+                this.ngOnInit();
+              });
+          },
+          (err) => {
+            this.toastr.error(err.error.message);
+            this.ngOnInit();
+          }
+        );
     }
 
     if (args.requestType === 'delete') {

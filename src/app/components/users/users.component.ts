@@ -205,9 +205,12 @@ export class UsersComponent {
       for (var i = 0; i < this.grid.columns.length; i++) {
         const column = this.grid.columns[i];
         if (
-          column &&
-          typeof column !== 'string' &&
-          column.headerText === 'Password'
+          (column &&
+            typeof column !== 'string' &&
+            column.headerText === 'Password') ||
+          (column &&
+            typeof column !== 'string' &&
+            column.headerText === 'isAvailable?')
         ) {
           column.visible = true;
         }

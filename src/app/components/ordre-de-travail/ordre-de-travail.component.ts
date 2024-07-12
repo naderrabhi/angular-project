@@ -182,13 +182,17 @@ export class OrdreDeTravailComponent {
             this.ngOnInit();
           },
           (err) => {
-            for (const key in err.error.errors) {
-              if (err.error.errors.hasOwnProperty(key)) {
-                this.toastr.error(err.error.errors[key]);
+            if (err.error.errors) {
+              for (const key in err.error.errors) {
+                if (err.error.errors.hasOwnProperty(key)) {
+                  this.toastr.error(err.error.errors[key]);
+                }
               }
-              this.showSpinner = true;
-              this.ngOnInit();
+            } else {
+              this.toastr.error(err.error.message);
             }
+            this.showSpinner = true;
+            this.ngOnInit();
           }
         );
     }
